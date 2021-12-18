@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     login() {
-
+      this.$store.dispatch('user/login', this.form)
     },
   }
 }
