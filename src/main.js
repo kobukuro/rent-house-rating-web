@@ -10,6 +10,9 @@ import {LMap, LTileLayer, LMarker, LPopup, LIcon, LLayerGroup} from "vue2-leafle
 // 載入 css
 import "leaflet/dist/leaflet.css";
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import VueAxios from 'vue-axios'
 import axios from 'axios'
