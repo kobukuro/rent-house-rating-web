@@ -29,7 +29,7 @@ Vue.component("l-marker", LMarker);
 Vue.component("l-popup", LPopup);
 Vue.component("l-icon", LIcon);
 Vue.component("l-layer-group", LLayerGroup);
-Vue.component('VIcon', Icon)
+Vue.component('VIconAwesome', Icon)
 
 
 // Make BootstrapVue available throughout your project

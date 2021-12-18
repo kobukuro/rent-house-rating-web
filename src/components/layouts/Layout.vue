@@ -6,7 +6,7 @@
           <el-tooltip content="Language" effect="dark" placement="bottom">
             <el-dropdown trigger="click" @command="handleLanguageCommand">
               <el-button id="btn_lang_toggle" size="medium" circle>
-                <v-icon name="globe-asia"></v-icon>
+                <v-icon-awesome name="globe-asia"></v-icon-awesome>
               </el-button>
               <el-dropdown-menu>
                 <el-dropdown-item id="option_english" command="en_us">English</el-dropdown-item>
@@ -21,7 +21,7 @@
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="logout">
-                <v-icon name="sign-out-alt"></v-icon>
+                <v-icon-awesome name="sign-out-alt"></v-icon-awesome>
                 Logout
               </el-dropdown-item>
             </el-dropdown-menu>
