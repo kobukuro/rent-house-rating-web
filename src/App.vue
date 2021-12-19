@@ -42,7 +42,11 @@
   <!--    </v-main>-->
   <!--  </v-app>-->
   <div id="app">
-    <router-view></router-view>
+    <v-app>
+      <v-content>
+        <router-view></router-view>
+      </v-content>
+    </v-app>
   </div>
 </template>
 
