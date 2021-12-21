@@ -24,7 +24,7 @@ import 'vue-awesome/icons'
 // 設定預設 icon, 使用別名
 import {Icon as LeafIcon} from "leaflet";
 import vuetify from "@/plugins/vuetify";
-
+import AlertCmp from '@/components/shared/Alert.vue'
 // 啟用載入的各組件
 Vue.component("l-map", LMap);
 Vue.component("l-tile-layer", LTileLayer);
@@ -33,7 +33,7 @@ Vue.component("l-popup", LPopup);
 Vue.component("l-icon", LIcon);
 Vue.component("l-layer-group", LLayerGroup);
 Vue.component('VIconAwesome', Icon)
-
+Vue.component('app-alert', AlertCmp)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)

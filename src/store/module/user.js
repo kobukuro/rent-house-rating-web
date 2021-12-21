@@ -6,6 +6,7 @@ const state = {
     access_token: null,
     refresh_token: null,
     username: null,
+    error: null
 }
 const mutations = {
     SET_ACCESS_TOKEN: (state, access_token) => {
@@ -20,6 +21,12 @@ const mutations = {
     SET_LOGIN: (state, login) => {
         state.login = login
     },
+    SER_ERROR(state, payload) {
+        state.error = payload
+    },
+    CLEAR_ERROR(state) {
+        state.error = null
+    }
 
 }
 const actions = {
@@ -41,7 +48,7 @@ const actions = {
             .catch(error => {
                     switch (error.response.status) {
                         case 401:
-
+                            commit('SER_ERROR', 'Given credential is incorrect.')
                     }
                 }
             )
@@ -51,11 +58,21 @@ const actions = {
         commit('SET_ACCESS_TOKEN', null)
         commit('SET_REFRESH_TOKEN', null)
         commit('SET_USER', null)
+        commit('CLEAR_ERROR')
         router.push({name: 'Login'})
     },
     set_access_token({commit}, access_token) {
         commit('SET_ACCESS_TOKEN', access_token)
+    },
+    clearError({commit}) {
+        commit('CLEAR_ERROR')
     }
+}
+const getters = {
+    error(state) {
+        return state.error
+    }
+
 }
 
 export default {
@@ -66,5 +83,6 @@ export default {
     namespaced: true,
     state,
     mutations,
-    actions
+    actions,
+    getters
 }
