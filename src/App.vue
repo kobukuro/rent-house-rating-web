@@ -43,9 +43,9 @@
   <!--  </v-app>-->
   <div id="app">
     <v-app>
-      <v-content>
+      <v-main>
         <router-view></router-view>
-      </v-content>
+      </v-main>
     </v-app>
   </div>
 </template>

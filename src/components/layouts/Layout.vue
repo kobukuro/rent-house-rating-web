@@ -31,31 +31,54 @@
     <!--    </el-header>-->
     <v-toolbar>
       <v-spacer></v-spacer>
-      <v-menu offset-y style="position: relative; z-index: 3">
-        <template v-slot:activator="{ on }">
-          <v-btn
-              dark
-              icon
-              v-on="on"
-          >
-            <v-icon color="primary">notifications</v-icon>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs"
+                 v-on="on"
+                 icon>
+            <v-icon>account_circle</v-icon>
           </v-btn>
         </template>
-        <v-card>
-          <v-list dense>
-            <v-subheader>Notifications</v-subheader>
-            <v-divider></v-divider>
-            <v-list-tile
-                v-for="notification in notifications"
-                :key="`notification-key-${notification.id}`"
-            >
-              <v-list-tile-title>
-                {{ notification.title }}
-              </v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-card>
+        <v-list>
+          <v-list-item>
+            <v-btn @click="logout">
+              <span>Logout</span>
+              <v-icon>logout</v-icon>
+            </v-btn>
+          </v-list-item>
+        </v-list>
+        <!--          <v-btn v-bind="attrs"-->
+        <!--                 v-on="on"-->
+        <!--                 icon>-->
+        <!--            <v-icon>notifications</v-icon>-->
+        <!--          </v-btn>-->
+
       </v-menu>
+      <!--      <v-menu offset-y style="position: relative; z-index: 3">-->
+      <!--        <template v-slot:activator="{ on }">-->
+      <!--          <v-btn-->
+      <!--              dark-->
+      <!--              icon-->
+      <!--              v-on="on"-->
+      <!--          >-->
+      <!--            <v-icon color="primary">notifications</v-icon>-->
+      <!--          </v-btn>-->
+      <!--        </template>-->
+      <!--        <v-card>-->
+      <!--          <v-list dense>-->
+      <!--            <v-subheader>Notifications</v-subheader>-->
+      <!--            <v-divider></v-divider>-->
+      <!--            <v-list-tile-->
+      <!--                v-for="notification in notifications"-->
+      <!--                :key="`notification-key-${notification.id}`"-->
+      <!--            >-->
+      <!--              <v-list-tile-title>-->
+      <!--                {{ notification.title }}-->
+      <!--              </v-list-tile-title>-->
+      <!--            </v-list-tile>-->
+      <!--          </v-list>-->
+      <!--        </v-card>-->
+      <!--      </v-menu>-->
     </v-toolbar>
     <el-main>
       <main-page style="position: relative; z-index: 3"/>
@@ -81,6 +104,9 @@ export default {
     }
   },
   methods: {
+    logout() {
+      this.$store.dispatch('user/logout')
+    },
     handleCommand(command) {
       switch (command) {
         case  'logout': {
