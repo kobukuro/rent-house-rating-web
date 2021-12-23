@@ -29,7 +29,7 @@
     <!--        </div>-->
     <!--      </el-row>-->
     <!--    </el-header>-->
-    <v-toolbar>
+    <v-toolbar dense elevation="2">
       <v-spacer></v-spacer>
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
