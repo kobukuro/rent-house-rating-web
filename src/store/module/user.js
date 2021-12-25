@@ -6,6 +6,7 @@ const state = {
     access_token: null,
     refresh_token: null,
     username: null,
+    email: null,
     error: null
 }
 const mutations = {
@@ -17,6 +18,9 @@ const mutations = {
     },
     SET_USER: (state, username) => {
         state.username = username
+    },
+    SET_EMAIL: (state, email) => {
+        state.email = email
     },
     SET_LOGIN: (state, login) => {
         state.login = login
@@ -41,6 +45,7 @@ const actions = {
                         commit('SET_ACCESS_TOKEN', res.data.access)
                         commit('SET_REFRESH_TOKEN', res.data.refresh)
                         commit('SET_USER', res.data.username)
+                        commit('SET_EMAIL', email)
                         router.push("/");
                 }
 

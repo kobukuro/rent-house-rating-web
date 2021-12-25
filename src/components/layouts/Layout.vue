@@ -42,6 +42,12 @@
           </template>
           <v-list>
             <v-list-item>
+              {{ username }}
+            </v-list-item>
+            <v-list-item>
+              {{ email }}
+            </v-list-item>
+            <v-list-item>
               <v-btn @click="logout">
                 <span>Logout</span>
                 <v-icon>logout</v-icon>
@@ -85,9 +91,10 @@
                            absolute
                            bottom
                            temporary
-                           class="indigo" v-model="is_side_navigation_drawer_show"
-                           overlay-opacity="0">
-        <p>test</p>
+                           class="white"
+                           v-model="is_side_navigation_drawer_show"
+                           overlay-opacity="0"
+                           width="420">
       </v-navigation-drawer>
     </nav>
     <el-main>
@@ -98,7 +105,7 @@
 </template>
 
 <script>
-import {getUserName} from "@/utils/auth";
+import {getUserName, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
 
 export default {
@@ -136,6 +143,9 @@ export default {
   computed: {
     username() {
       return getUserName()
+    },
+    email() {
+      return getEmail()
     }
   }
 }
