@@ -29,59 +29,70 @@
     <!--        </div>-->
     <!--      </el-row>-->
     <!--    </el-header>-->
-    <v-toolbar dense elevation="2">
-      <v-spacer></v-spacer>
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs"
-                 v-on="on"
-                 icon>
-            <v-icon>account_circle</v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item>
-            <v-btn @click="logout">
-              <span>Logout</span>
-              <v-icon>logout</v-icon>
+    <nav>
+      <v-toolbar dense elevation="2">
+        <v-spacer></v-spacer>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs"
+                   v-on="on"
+                   icon>
+              <v-icon>account_circle</v-icon>
             </v-btn>
-          </v-list-item>
-        </v-list>
-        <!--          <v-btn v-bind="attrs"-->
-        <!--                 v-on="on"-->
-        <!--                 icon>-->
-        <!--            <v-icon>notifications</v-icon>-->
-        <!--          </v-btn>-->
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-btn @click="logout">
+                <span>Logout</span>
+                <v-icon>logout</v-icon>
+              </v-btn>
+            </v-list-item>
+          </v-list>
+          <!--          <v-btn v-bind="attrs"-->
+          <!--                 v-on="on"-->
+          <!--                 icon>-->
+          <!--            <v-icon>notifications</v-icon>-->
+          <!--          </v-btn>-->
 
-      </v-menu>
-      <!--      <v-menu offset-y style="position: relative; z-index: 3">-->
-      <!--        <template v-slot:activator="{ on }">-->
-      <!--          <v-btn-->
-      <!--              dark-->
-      <!--              icon-->
-      <!--              v-on="on"-->
-      <!--          >-->
-      <!--            <v-icon color="primary">notifications</v-icon>-->
-      <!--          </v-btn>-->
-      <!--        </template>-->
-      <!--        <v-card>-->
-      <!--          <v-list dense>-->
-      <!--            <v-subheader>Notifications</v-subheader>-->
-      <!--            <v-divider></v-divider>-->
-      <!--            <v-list-tile-->
-      <!--                v-for="notification in notifications"-->
-      <!--                :key="`notification-key-${notification.id}`"-->
-      <!--            >-->
-      <!--              <v-list-tile-title>-->
-      <!--                {{ notification.title }}-->
-      <!--              </v-list-tile-title>-->
-      <!--            </v-list-tile>-->
-      <!--          </v-list>-->
-      <!--        </v-card>-->
-      <!--      </v-menu>-->
-    </v-toolbar>
+        </v-menu>
+        <!--      <v-menu offset-y style="position: relative; z-index: 3">-->
+        <!--        <template v-slot:activator="{ on }">-->
+        <!--          <v-btn-->
+        <!--              dark-->
+        <!--              icon-->
+        <!--              v-on="on"-->
+        <!--          >-->
+        <!--            <v-icon color="primary">notifications</v-icon>-->
+        <!--          </v-btn>-->
+        <!--        </template>-->
+        <!--        <v-card>-->
+        <!--          <v-list dense>-->
+        <!--            <v-subheader>Notifications</v-subheader>-->
+        <!--            <v-divider></v-divider>-->
+        <!--            <v-list-tile-->
+        <!--                v-for="notification in notifications"-->
+        <!--                :key="`notification-key-${notification.id}`"-->
+        <!--            >-->
+        <!--              <v-list-tile-title>-->
+        <!--                {{ notification.title }}-->
+        <!--              </v-list-tile-title>-->
+        <!--            </v-list-tile>-->
+        <!--          </v-list>-->
+        <!--        </v-card>-->
+        <!--      </v-menu>-->
+      </v-toolbar>
+      <v-navigation-drawer app
+                           absolute
+                           bottom
+                           temporary
+                           class="indigo" v-model="is_side_navigation_drawer_show"
+                           overlay-opacity="0">
+        <p>test</p>
+      </v-navigation-drawer>
+    </nav>
     <el-main>
-      <main-page style="position: relative; z-index: 3"/>
+
+      <main-page style="position: relative; z-index: 3" @markerClicked="onClickMarker"/>
     </el-main>
   </div>
 </template>
@@ -100,7 +111,8 @@ export default {
         {id: 2, title: 'Click Me'},
         {id: 3, title: 'Click Me'},
         {id: 4, title: 'Click Me 2'}
-      ]
+      ],
+      is_side_navigation_drawer_show: false
     }
   },
   methods: {
@@ -116,6 +128,9 @@ export default {
     },
     handleLanguageCommand(locale) {
       console.log(locale)
+    },
+    onClickMarker() {
+      this.is_side_navigation_drawer_show = true
     }
   },
   computed: {
