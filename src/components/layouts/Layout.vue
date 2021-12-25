@@ -95,6 +95,24 @@
                            v-model="is_side_navigation_drawer_show"
                            overlay-opacity="0"
                            width="420">
+        <v-list
+            dense
+            nav
+        >
+          <v-list-item
+              v-for="item in side_navigation_drawer_items"
+              :key="item.title"
+              link
+          >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ item.value }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
       </v-navigation-drawer>
     </nav>
     <el-main>
@@ -119,7 +137,16 @@ export default {
         {id: 3, title: 'Click Me'},
         {id: 4, title: 'Click Me 2'}
       ],
-      is_side_navigation_drawer_show: false
+      location: {
+        address: ''
+      },
+      is_side_navigation_drawer_show: false,
+      side_navigation_drawer_items: [
+        {title: 'Address', icon: 'mdi-map-marker', value: ''},
+        {title: 'Owner', icon: 'mdi-account', value: ''}
+        // {title: 'Photos', icon: 'mdi-image'},
+        // {title: 'About', icon: 'mdi-help-box'},
+      ],
     }
   },
   methods: {
@@ -136,8 +163,18 @@ export default {
     handleLanguageCommand(locale) {
       console.log(locale)
     },
-    onClickMarker() {
+    onClickMarker(location) {
+      console.log(location)
       this.is_side_navigation_drawer_show = true
+      this.location.address = location.address
+      this.side_navigation_drawer_items.forEach(item => {
+        if (item.title === 'Address') {
+          item.value = location.address
+        }
+        if (item.title === 'Owner') {
+          item.value = location.ownerName
+        }
+      })
     }
   },
   computed: {

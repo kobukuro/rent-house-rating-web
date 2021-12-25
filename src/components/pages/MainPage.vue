@@ -54,7 +54,7 @@
         </l-popup>
       </l-marker>
       <!-- 創建標記點 -->
-      <l-marker :lat-lng="item.local" v-for="item in data" :key="item.id" @click="clickMarker(item.id)">
+      <l-marker :lat-lng="item.local" v-for="item in data" :key="item.id" @click="clickMarker(item)">
         <!-- 標記點樣式判斷 -->
         <l-icon
             :icon-url="item.address === '夢時代購物中心'?icon.type.gold:icon.type.black"
@@ -239,9 +239,9 @@ export default {
           })
 
     },
-    clickMarker(location_id) {
-      this.$emit('markerClicked')
-      this.ratingToAdd.location_id = location_id
+    clickMarker(location) {
+      this.$emit('markerClicked', location)
+      this.ratingToAdd.location_id = location.id
 
     }
   },
