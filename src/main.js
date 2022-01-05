@@ -25,6 +25,7 @@ import 'vue-awesome/icons'
 import {Icon as LeafIcon} from "leaflet";
 import vuetify from "@/plugins/vuetify";
 import AlertCmp from '@/components/shared/Alert.vue'
+import VueApexCharts from 'vue-apexcharts'
 // 啟用載入的各組件
 Vue.component("l-map", LMap);
 Vue.component("l-tile-layer", LTileLayer);
@@ -42,8 +43,8 @@ Vue.use(IconsPlugin)
 Vue.use(Element)
 
 Vue.use(VueAxios, axios)
-
-
+Vue.use(VueApexCharts)
+Vue.component('apexchart', VueApexCharts)
 delete LeafIcon.Default.prototype._getIconUrl;
 LeafIcon.Default.mergeOptions({
     iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),

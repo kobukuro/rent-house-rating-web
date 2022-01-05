@@ -94,7 +94,7 @@
                            class="white"
                            v-model="is_side_navigation_drawer_show"
                            overlay-opacity="0"
-                           width="420">
+                           width="500">
         <v-list
             dense
             nav
@@ -113,6 +113,9 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+        <div>
+          <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
+        </div>
       </v-navigation-drawer>
     </nav>
     <el-main>
@@ -147,6 +150,29 @@ export default {
         // {title: 'Photos', icon: 'mdi-image'},
         // {title: 'About', icon: 'mdi-help-box'},
       ],
+      series: [{
+            data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+          }],
+          chartOptions: {
+            chart: {
+              type: 'bar',
+              height: 350
+            },
+            plotOptions: {
+              bar: {
+                borderRadius: 4,
+                horizontal: true,
+              }
+            },
+            dataLabels: {
+              enabled: false
+            },
+            xaxis: {
+              categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
+                'United States', 'China', 'Germany'
+              ],
+            }
+          },
     }
   },
   methods: {
