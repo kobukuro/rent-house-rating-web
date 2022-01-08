@@ -151,28 +151,29 @@ export default {
         // {title: 'About', icon: 'mdi-help-box'},
       ],
       series: [{
-            data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
-          }],
-          chartOptions: {
-            chart: {
-              type: 'bar',
-              height: 350
-            },
-            plotOptions: {
-              bar: {
-                borderRadius: 4,
-                horizontal: true,
-              }
-            },
-            dataLabels: {
-              enabled: false
-            },
-            xaxis: {
-              categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-                'United States', 'China', 'Germany'
-              ],
-            }
-          },
+        data: []
+      }],
+      chartOptions: {
+        chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 4,
+            horizontal: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: [],
+          labels: {
+            show: true,
+          }
+        }
+      },
     }
   },
   methods: {
@@ -189,8 +190,9 @@ export default {
     handleLanguageCommand(locale) {
       console.log(locale)
     },
+    //這個是從MainPage的clickMarker裡傳過來的
     onClickMarker(location) {
-      console.log(location)
+      // console.log(location)
       this.is_side_navigation_drawer_show = true
       this.location.address = location.address
       this.side_navigation_drawer_items.forEach(item => {
@@ -201,6 +203,39 @@ export default {
           item.value = location.ownerName
         }
       })
+
+      // console.log(location.ratings)
+      let map = new Map();
+      location.ratings.forEach(item => {
+            if (!map.has(item.rating)) {
+              map.set(item.rating, 1)
+            } else {
+              map.set(item.rating, map.get(item.rating) + 1)
+            }
+
+          }
+      )
+      this.chartOptions.xaxis.categories.splice(0)
+      this.series[0]['data'].splice(0)
+      let mapAsc = new Map([...map.entries()].sort());
+      let key_array = []
+      let value_array = []
+      mapAsc.forEach(function (value, key) {
+        // console.log(key, value)
+        key_array.push(key)
+        value_array.push(value)
+      })
+      console.log(key_array)
+      console.log(value_array)
+      key_array.forEach(item => this.chartOptions.xaxis.categories.push(item));
+      value_array.forEach(item => this.series[0]['data'].push(item));
+      // this.chartOptions.xaxis.categories = key_array
+      // this.series[0]['data'] = value_array
+      // this.chartOptions.xaxis.categories.push('1', '2', '3', '4', '5');
+      //
+      // this.series[0]['data'].push(1, 2, 3, 4, 10);
+
+
     }
   },
   computed: {
