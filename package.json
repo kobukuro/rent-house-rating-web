@@ -26,6 +26,7 @@
     "vue-context": "^6.0.0",
     "vue-context-menu": "^2.0.6",
     "vue-router": "^3.5.3",
+    "vue-star-rating": "^1.7.0",
     "vue-toasted": "^1.1.28",
     "vue2-leaflet": "^2.7.1",
     "vuetify": "^2.6.1",

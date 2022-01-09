@@ -123,6 +123,7 @@
             </div>
           </div>
         </div>
+        <star-rating v-bind:star-size="20" v-model="rating_average"></star-rating>
       </v-navigation-drawer>
     </nav>
     <el-main>
@@ -135,10 +136,11 @@
 <script>
 import {getUserName, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
+import StarRating from 'vue-star-rating'
 
 export default {
   name: "Layout",
-  components: {MainPage},
+  components: {MainPage, StarRating},
   data() {
     return {
       rating_average: 0,
@@ -162,6 +164,9 @@ export default {
         data: []
       }],
       chartOptions: {
+        grid: {
+          show: true
+        },
         colors: ['#FF9300'],
         chart: {
           type: 'bar',
@@ -317,7 +322,7 @@ export default {
 .vertical-center {
   margin: 0;
   position: absolute;
-  top: 50%;
+  top: 40%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%) translateX(200%);
 }
