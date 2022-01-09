@@ -156,7 +156,11 @@ export default {
       chartOptions: {
         chart: {
           type: 'bar',
-          height: 350
+          height: 350,
+          toolbar: {
+            //關掉可以下載的選項
+            show: false
+          }
         },
         plotOptions: {
           bar: {
