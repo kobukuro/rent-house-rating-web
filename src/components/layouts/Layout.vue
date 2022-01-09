@@ -184,6 +184,18 @@ export default {
               return val.toFixed(0)
             }
           }
+        },
+        tooltip: {
+          enabled: true,
+          x: {
+            show: true,
+          },
+          y: {
+            formatter: undefined,
+            title: {
+              formatter: () => '',
+            },
+          },
         }
       },
     }
@@ -227,6 +239,7 @@ export default {
 
           }
       )
+      // clear categories and series data
       this.chartOptions.xaxis.categories.splice(0)
       this.series[0]['data'].splice(0)
       let mapAsc = new Map([...map.entries()].sort());
@@ -237,8 +250,8 @@ export default {
         key_array.push(key)
         value_array.push(value)
       })
-      console.log(key_array)
-      console.log(value_array)
+      // console.log(key_array)
+      // console.log(value_array)
       key_array.forEach(item => this.chartOptions.xaxis.categories.push(item));
       value_array.forEach(item => this.series[0]['data'].push(item));
       // this.chartOptions.xaxis.categories = key_array
