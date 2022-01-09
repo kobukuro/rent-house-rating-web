@@ -115,7 +115,7 @@
         </v-list>
         <div style="width:100%">
           <div style="float:left;width:80%">
-            <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
+            <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
           </div>
           <div style="float:right;width:20%" class="container">
             <div class="vertical-center">
@@ -162,6 +162,7 @@ export default {
         data: []
       }],
       chartOptions: {
+        colors: ['#FF9300'],
         chart: {
           type: 'bar',
           height: 350,
@@ -183,7 +184,7 @@ export default {
           categories: [],
           tickAmount: 1,
           labels: {
-            show: true,
+            show: false,
             formatter: function (val) {
               return val.toFixed(0)
             }
@@ -194,7 +195,14 @@ export default {
             show: true,
             formatter: function (val) {
               return val.toFixed(0)
-            }
+            },
+            style: {
+              colors: [],
+              fontSize: '16px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              fontWeight: 400,
+              cssClass: 'apexcharts-yaxis-label',
+            },
           }
         },
         tooltip: {
