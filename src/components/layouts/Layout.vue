@@ -230,6 +230,11 @@ export default {
 
       // console.log(location.ratings)
       let map = new Map();
+      map.set(1, 0)
+      map.set(2, 0)
+      map.set(3, 0)
+      map.set(4, 0)
+      map.set(5, 0)
       location.ratings.forEach(item => {
             if (!map.has(item.rating)) {
               map.set(item.rating, 1)
@@ -243,9 +248,10 @@ export default {
       this.chartOptions.xaxis.categories.splice(0)
       this.series[0]['data'].splice(0)
       let mapAsc = new Map([...map.entries()].sort());
+      let mapDec = new Map([...mapAsc.entries()].reverse());
       let key_array = []
       let value_array = []
-      mapAsc.forEach(function (value, key) {
+      mapDec.forEach(function (value, key) {
         // console.log(key, value)
         key_array.push(key)
         value_array.push(value)
