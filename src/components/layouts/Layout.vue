@@ -119,7 +119,7 @@
           </div>
           <div style="float:right;width:20%" class="container">
             <div class="vertical-center">
-              <p>{{ rating_average }}</p>
+              <p class="average-rating-style">{{ rating_average }}</p>
             </div>
           </div>
         </div>
@@ -317,5 +317,11 @@ export default {
 
 .right-menu {
   float: right;
+}
+
+.average-rating-style {
+  font-family: fantasy;
+  font-size: 35px;
+  color: black;
 }
 </style>
