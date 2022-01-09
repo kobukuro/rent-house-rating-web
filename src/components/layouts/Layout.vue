@@ -169,8 +169,20 @@ export default {
         },
         xaxis: {
           categories: [],
+          tickAmount: 1,
           labels: {
             show: true,
+            formatter: function (val) {
+              return val.toFixed(0)
+            }
+          }
+        },
+        yaxis: {
+          labels: {
+            show: true,
+            formatter: function (val) {
+              return val.toFixed(0)
+            }
           }
         }
       },
