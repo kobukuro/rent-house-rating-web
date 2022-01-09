@@ -119,7 +119,7 @@
           </div>
           <div style="float:right;width:20%" class="container">
             <div class="vertical-center">
-              First
+              <p>{{ rating_average }}</p>
             </div>
           </div>
         </div>
@@ -141,6 +141,7 @@ export default {
   components: {MainPage},
   data() {
     return {
+      rating_average: 0,
       notifications: [
         {id: 1, title: 'Click Me'},
         {id: 2, title: 'Click Me'},
@@ -267,15 +268,15 @@ export default {
         key_array.push(key)
         value_array.push(value)
       })
-      // console.log(key_array)
-      // console.log(value_array)
       key_array.forEach(item => this.chartOptions.xaxis.categories.push(item));
       value_array.forEach(item => this.series[0]['data'].push(item));
-      // this.chartOptions.xaxis.categories = key_array
-      // this.series[0]['data'] = value_array
-      // this.chartOptions.xaxis.categories.push('1', '2', '3', '4', '5');
-      //
-      // this.series[0]['data'].push(1, 2, 3, 4, 10);
+      let total = 0
+      let count = 0
+      for (let i = 0; i < key_array.length; i++) {
+        count += value_array[i]
+        total += key_array[i] * value_array[i]
+      }
+      this.rating_average = total / count
 
 
     }
@@ -310,7 +311,7 @@ export default {
   position: absolute;
   top: 50%;
   -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateX(200%);
 }
 
 
