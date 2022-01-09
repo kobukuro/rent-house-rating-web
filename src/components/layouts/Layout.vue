@@ -212,6 +212,9 @@ export default {
         },
         tooltip: {
           enabled: true,
+          marker: {
+            show: false,
+          },
           x: {
             show: true,
           },
