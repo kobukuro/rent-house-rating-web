@@ -113,8 +113,15 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-        <div>
-          <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
+        <div style="width:100%">
+          <div style="float:left;width:80%">
+            <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
+          </div>
+          <div style="float:right;width:20%" class="container">
+            <div class="vertical-center">
+              First
+            </div>
+          </div>
         </div>
       </v-navigation-drawer>
     </nav>
@@ -290,6 +297,20 @@ export default {
   color: black;
   text-align: left;
 
+}
+
+.container {
+  height: 350px;
+  position: relative;
+  /*border: 3px solid green;*/
+}
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 
