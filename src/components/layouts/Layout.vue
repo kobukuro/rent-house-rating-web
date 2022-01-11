@@ -129,7 +129,10 @@
           <v-list-item v-for="(item, index) in location.ratings" :key="index">
             <v-card>
               <p>{{item.created_by_username}}</p>
-              <p>{{item.rating}}</p>
+              <p><star-rating v-bind:read-only="true"
+                              v-bind:show-rating="false"
+                              v-bind:star-size="15"
+                              v-model="item.rating"></star-rating></p>
               <p>{{item.comment}}</p>
               <p>{{item.created_at}}</p>
             </v-card>
@@ -154,7 +157,7 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
-
+      star_read_only:true,
       notifications: [
         {id: 1, title: 'Click Me'},
         {id: 2, title: 'Click Me'},
