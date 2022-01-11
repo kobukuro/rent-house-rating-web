@@ -119,11 +119,22 @@
           </div>
           <div style="float:right;width:20%" class="container">
             <div class="vertical-center">
-              <p class="average-rating-style">{{ rating_average }}</p>
+              <p class="average-rating-style">{{ location.rating_average }}</p>
             </div>
           </div>
+
+        <star-rating v-bind:star-size="20" v-model="location.rating_average"></star-rating>
         </div>
-        <star-rating v-bind:star-size="20" v-model="rating_average"></star-rating>
+        <v-list>
+          <v-list-item v-for="(item, index) in location.ratings" :key="index">
+            <v-card>
+              <p>{{item.created_by_username}}</p>
+              <p>{{item.rating}}</p>
+              <p>{{item.comment}}</p>
+              <p>{{item.created_at}}</p>
+            </v-card>
+          </v-list-item>
+        </v-list>
       </v-navigation-drawer>
     </nav>
     <el-main>
@@ -143,7 +154,7 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
-      rating_average: 0,
+
       notifications: [
         {id: 1, title: 'Click Me'},
         {id: 2, title: 'Click Me'},
@@ -151,7 +162,9 @@ export default {
         {id: 4, title: 'Click Me 2'}
       ],
       location: {
-        address: ''
+        address: '',
+        rating_average: 0,
+        ratings:[]
       },
       is_side_navigation_drawer_show: false,
       side_navigation_drawer_items: [
@@ -244,7 +257,7 @@ export default {
     },
     //這個是從MainPage的clickMarker裡傳過來的
     onClickMarker(location) {
-      // console.log(location)
+      console.log(location)
       this.is_side_navigation_drawer_show = true
       this.location.address = location.address
       this.side_navigation_drawer_items.forEach(item => {
@@ -263,12 +276,14 @@ export default {
       map.set(3, 0)
       map.set(4, 0)
       map.set(5, 0)
+      this.location.ratings = []
       location.ratings.forEach(item => {
             if (!map.has(item.rating)) {
               map.set(item.rating, 1)
             } else {
               map.set(item.rating, map.get(item.rating) + 1)
             }
+            this.location.ratings.push(item)
 
           }
       )
@@ -292,8 +307,7 @@ export default {
         count += value_array[i]
         total += key_array[i] * value_array[i]
       }
-      this.rating_average = total / count
-
+      this.location.rating_average = total / count
 
     }
   },
