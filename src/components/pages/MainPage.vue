@@ -69,21 +69,21 @@
 
         </l-icon>
         <!-- 彈出視窗 -->
-        <l-popup>
-          <p>
-            address: {{ item.address }}
-          </p>
-          <p>
-            owner name: {{ item.ownerName }}
-          </p>
-          <p>
-            <b-button @click="showRatingModalMethod">add rating data</b-button>
-          </p>
-          <p v-for="data in item.ratings" :key="data.id">
-            rating: {{ data.rating }}
-            comment: {{ data.comment }}
-          </p>
-        </l-popup>
+<!--        <l-popup>-->
+<!--          <p>-->
+<!--            address: {{ item.address }}-->
+<!--          </p>-->
+<!--          <p>-->
+<!--            owner name: {{ item.ownerName }}-->
+<!--          </p>-->
+<!--          <p>-->
+<!--            <b-button @click="showRatingModalMethod">add rating data</b-button>-->
+<!--          </p>-->
+<!--          <p v-for="data in item.ratings" :key="data.id">-->
+<!--            rating: {{ data.rating }}-->
+<!--            comment: {{ data.comment }}-->
+<!--          </p>-->
+<!--        </l-popup>-->
       </l-marker>
     </l-map>
   </div>
