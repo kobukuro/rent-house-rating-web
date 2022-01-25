@@ -105,11 +105,11 @@
               link
           >
             <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon class="list-icon">{{ item.icon }}</v-icon>
             </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title>{{ item.value }}</v-list-item-title>
+            <v-list-item-content class="list-value">
+              {{ item.value }}
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -123,18 +123,20 @@
             </div>
           </div>
 
-        <star-rating v-bind:star-size="20" v-model="location.rating_average"></star-rating>
+          <star-rating v-bind:star-size="20" v-model="location.rating_average"></star-rating>
         </div>
         <v-list>
           <v-list-item v-for="(item, index) in location.ratings" :key="index">
             <v-card>
-              <p>{{item.created_by_username}}</p>
-              <p><star-rating v-bind:read-only="true"
-                              v-bind:show-rating="false"
-                              v-bind:star-size="15"
-                              v-model="item.rating"></star-rating></p>
-              <p>{{item.comment}}</p>
-              <p>{{item.created_at}}</p>
+              <p>{{ item.created_by_username }}</p>
+              <p>
+                <star-rating v-bind:read-only="true"
+                             v-bind:show-rating="false"
+                             v-bind:star-size="15"
+                             v-model="item.rating"></star-rating>
+              </p>
+              <p>{{ item.comment }}</p>
+              <p>{{ item.created_at }}</p>
             </v-card>
           </v-list-item>
         </v-list>
@@ -157,7 +159,7 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
-      star_read_only:true,
+      star_read_only: true,
       notifications: [
         {id: 1, title: 'Click Me'},
         {id: 2, title: 'Click Me'},
@@ -167,7 +169,7 @@ export default {
       location: {
         address: '',
         rating_average: 0,
-        ratings:[]
+        ratings: []
       },
       is_side_navigation_drawer_show: false,
       side_navigation_drawer_items: [
@@ -357,4 +359,15 @@ export default {
   font-size: 35px;
   color: black;
 }
+
+.list-icon {
+  height: 30px;
+}
+
+.list-value {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 20px;
+}
+
+
 </style>
