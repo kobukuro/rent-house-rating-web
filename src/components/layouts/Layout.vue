@@ -361,12 +361,12 @@ export default {
 }
 
 .list-icon {
-  height: 30px;
+  height: 38px;
 }
 
 .list-value {
   font-family: 'Noto Serif TC', serif;
-  font-size: 20px;
+  font-size: 1.5em;
 }
 
 
