@@ -367,6 +367,7 @@ export default {
 .list-value {
   font-family: 'Noto Serif TC', serif;
   font-size: 1.2em;
+  /*font-weight: 100;*/
 }
 
 
