@@ -97,17 +97,14 @@
                            width="500">
         <v-list
             dense
-            nav
-        >
+            nav>
           <v-list-item
               v-for="item in side_navigation_drawer_items"
               :key="item.title"
-              link
-          >
-            <v-list-item-icon>
+              link>
+            <v-list-item-icon >
               <v-icon class="list-icon">{{ item.icon }}</v-icon>
             </v-list-item-icon>
-
             <v-list-item-content class="list-value">
               {{ item.value }}
             </v-list-item-content>
@@ -361,13 +358,17 @@ export default {
 }
 
 .list-icon {
-  height: 30px;
+  /*height: 30px;*/
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 5px;
 }
 
 .list-value {
   font-family: 'Noto Serif TC', serif;
   font-size: 1.2em;
   /*font-weight: 100;*/
+
 }
 
 
