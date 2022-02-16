@@ -110,17 +110,24 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-        <div style="width:100%">
-          <div style="float:left;width:80%">
+        <div class="rating-container">
+          <div class="graph">
             <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
           </div>
-          <div style="float:right;width:20%" class="container">
-            <div class="vertical-center">
-              <p class="average-rating-style">{{ location.rating_average }}</p>
+          <div class="beside-graph">
+            <div class="star-rating">
+              <star-rating v-bind:star-size="30" v-model="location.rating_average"
+                           :read-only="true"
+                           :show-rating="false"></star-rating>
+            </div>
+            <div class="number-rating">
+              <div>
+                <p>{{ location.rating_average }}</p>
+              </div>
             </div>
           </div>
 
-          <star-rating v-bind:star-size="20" v-model="location.rating_average"></star-rating>
+
         </div>
         <v-list>
           <v-list-item v-for="(item, index) in location.ratings" :key="index">
@@ -325,37 +332,7 @@ export default {
 </script>
 
 <style scoped>
-.el-header {
-  background-color: slategray;
-  color: black;
-  text-align: left;
 
-}
-
-.container {
-  height: 350px;
-  position: relative;
-  /*border: 3px solid green;*/
-}
-
-.vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 40%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%) translateX(200%);
-}
-
-
-.right-menu {
-  float: right;
-}
-
-.average-rating-style {
-  font-family: fantasy;
-  font-size: 35px;
-  color: black;
-}
 
 .list-icon {
   /*height: 30px;*/
@@ -371,5 +348,36 @@ export default {
 
 }
 
+.rating-container {
+  display: flex;
+  /*align-items: center;*/
+  /*flex-wrap: wrap;*/
+}
+
+.graph {
+  width: 70%;
+}
+
+.beside-graph {
+  width: 30%;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.star-rating {
+
+}
+
+.number-rating {
+  font-family: fantasy;
+  font-size: 35px;
+  color: black;
+  height: 90%;
+  /*border: black 1px solid;*/
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
 
 </style>
