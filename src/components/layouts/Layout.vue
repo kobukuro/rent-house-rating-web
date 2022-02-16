@@ -347,6 +347,7 @@ export default {
 }
 
 .rating-container {
+  /*border: black 1px solid;*/
   display: flex;
   /*align-items: center;*/
   /*flex-wrap: wrap;*/
@@ -354,15 +355,20 @@ export default {
 
 .graph {
   width: 70%;
+  height: 15em;
+  /*border: red 1px solid;*/
 }
 
 .beside-graph {
+  /*border: purple 1px solid;*/
   width: 30%;
+  height: 15em;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .star-rating {
+  height: 15%;
 
 }
 
@@ -370,8 +376,8 @@ export default {
   font-family: fantasy;
   font-size: 35px;
   color: black;
-  height: 90%;
-  /*border: black 1px solid;*/
+  height: 85%;
+  /*border: steelblue 1px solid;*/
   display: flex;
   flex-wrap: wrap;
   /*水平置中*/
