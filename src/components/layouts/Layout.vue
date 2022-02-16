@@ -376,7 +376,9 @@ export default {
   /*border: black 1px solid;*/
   display: flex;
   flex-wrap: wrap;
+  /*水平置中*/
   justify-content: center;
+  /*垂直置中*/
   align-items: center;
 }
 
