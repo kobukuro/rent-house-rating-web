@@ -124,12 +124,10 @@
                 <p>{{ location.rating_average }}</p>
             </div>
           </div>
-
-
         </div>
-        <v-list>
+        <v-list class="comment-list-container">
           <v-list-item v-for="(item, index) in location.ratings" :key="index">
-            <v-card>
+            <v-card class="comment-card">
               <p>{{ item.created_by_username }}</p>
               <p>
                 <star-rating v-bind:read-only="true"
@@ -384,6 +382,16 @@ export default {
   justify-content: center;
   /*垂直置中*/
   align-items: center;
+}
+
+.comment-list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-card {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 </style>
