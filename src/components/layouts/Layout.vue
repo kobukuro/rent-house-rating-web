@@ -94,7 +94,8 @@
                            class="white"
                            v-model="is_side_navigation_drawer_show"
                            overlay-opacity="0"
-                           width="500">
+                           width="500"
+                           height="100%">
         <v-list
             dense
             nav>
