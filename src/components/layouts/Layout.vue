@@ -121,9 +121,7 @@
                            :show-rating="false"></star-rating>
             </div>
             <div class="number-rating">
-              <div>
                 <p>{{ location.rating_average }}</p>
-              </div>
             </div>
           </div>
 
