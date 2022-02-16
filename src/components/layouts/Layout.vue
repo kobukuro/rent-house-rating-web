@@ -390,6 +390,7 @@ export default {
 }
 
 .comment-card {
+  width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
 }
