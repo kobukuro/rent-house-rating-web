@@ -41,7 +41,14 @@
       <l-layer-group ref="newLayerGroup">
         <l-popup>
           <div>
-            <button @click="showLocationModalMethod">add location</button>
+            <v-btn
+                small
+                icon
+                @click="showLocationModalMethod">
+              <v-icon dark>
+                mdi-map-marker-plus
+              </v-icon>
+            </v-btn>
           </div>
         </l-popup>
       </l-layer-group>
@@ -69,21 +76,21 @@
 
         </l-icon>
         <!-- 彈出視窗 -->
-<!--        <l-popup>-->
-<!--          <p>-->
-<!--            address: {{ item.address }}-->
-<!--          </p>-->
-<!--          <p>-->
-<!--            owner name: {{ item.ownerName }}-->
-<!--          </p>-->
-<!--          <p>-->
-<!--            <b-button @click="showRatingModalMethod">add rating data</b-button>-->
-<!--          </p>-->
-<!--          <p v-for="data in item.ratings" :key="data.id">-->
-<!--            rating: {{ data.rating }}-->
-<!--            comment: {{ data.comment }}-->
-<!--          </p>-->
-<!--        </l-popup>-->
+        <!--        <l-popup>-->
+        <!--          <p>-->
+        <!--            address: {{ item.address }}-->
+        <!--          </p>-->
+        <!--          <p>-->
+        <!--            owner name: {{ item.ownerName }}-->
+        <!--          </p>-->
+        <!--          <p>-->
+        <!--            <b-button @click="showRatingModalMethod">add rating data</b-button>-->
+        <!--          </p>-->
+        <!--          <p v-for="data in item.ratings" :key="data.id">-->
+        <!--            rating: {{ data.rating }}-->
+        <!--            comment: {{ data.comment }}-->
+        <!--          </p>-->
+        <!--        </l-popup>-->
       </l-marker>
     </l-map>
   </div>
