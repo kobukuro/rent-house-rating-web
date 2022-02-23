@@ -219,6 +219,7 @@ export default {
       console.log(event.latlng);
     },
     openContextMenu(event) {
+      // console.log(event.latlng);
       this.$refs.newLayerGroup.mapObject.openPopup(event.latlng);
       this.locationToAdd.lat = event.latlng.lat;
       this.locationToAdd.lng = event.latlng.lng;
@@ -230,6 +231,8 @@ export default {
       open_street_api.get(`reverse?format=jsonv2&lat=${this.locationToAdd.lat}&lon=${this.locationToAdd.lng}`)
           .then(res => {
             this.locationToAdd.country_name = res.data.address.country
+            this.locationToAdd.address = res.data.address.city + res.data.address.town + res.data.address.road
+            // console.log(res.data.address)
             location_api.get('countries')
                 .then(res => {
                   res.data.forEach(element => {
