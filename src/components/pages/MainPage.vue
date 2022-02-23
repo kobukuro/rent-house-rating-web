@@ -34,13 +34,18 @@
         :zoom="zoom"
         :center="center"
         :options="options"
-        style="height: 100vh;"
+        style="height: 100vh"
         @contextmenu="openContextMenu"
     >
 
-      <l-layer-group ref="newLayerGroup">
+      <l-layer-group ref="newLayerGroup" class="leaflet-popup-content">
         <l-popup>
           <div>
+            <v-text-field :value="locationToAdd.lat.toFixed(5)+','+locationToAdd.lng.toFixed(5)"
+                          disabled
+            >
+
+            </v-text-field>
             <v-dialog
                 v-model="dialog"
                 width="500"
@@ -231,8 +236,18 @@ export default {
       open_street_api.get(`reverse?format=jsonv2&lat=${this.locationToAdd.lat}&lon=${this.locationToAdd.lng}`)
           .then(res => {
             this.locationToAdd.country_name = res.data.address.country
-            this.locationToAdd.address = res.data.address.city + res.data.address.town + res.data.address.road
-            // console.log(res.data.address)
+            let auto_address = ''
+            if (res.data.address.city !== undefined) {
+              auto_address += res.data.address.city
+            }
+            if (res.data.address.town !== undefined) {
+              auto_address += res.data.address.town
+            }
+            if (res.data.address.road !== undefined) {
+              auto_address += res.data.address.road
+            }
+            this.locationToAdd.address = auto_address
+            console.log(res.data.address)
             location_api.get('countries')
                 .then(res => {
                   res.data.forEach(element => {
@@ -344,5 +359,12 @@ export default {
 html, body {
   padding: 0;
   margin: 0;
+}
+
+.leaflet-popup-content {
+  max-width: 2000px;
+  min-width: 180px;
+  height: 100px;
+  /*overflow-y: scroll;*/
 }
 </style>
