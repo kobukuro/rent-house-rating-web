@@ -138,7 +138,9 @@
                   v-on="on"
                   class="write-comment-btn" style="text-transform: none !important"
               >
-                Write Comment
+                <span v-if="location.already_wrote_comment">Edit comment</span>
+                <span v-else>Write Comment</span>
+
               </v-btn>
             </template>
             <v-card>
@@ -217,7 +219,8 @@ export default {
       location: {
         address: '',
         rating_average: 0,
-        ratings: []
+        ratings: [],
+        already_wrote_comment: false
       },
       is_side_navigation_drawer_show: false,
       side_navigation_drawer_items: [
@@ -330,7 +333,11 @@ export default {
       map.set(4, 0)
       map.set(5, 0)
       this.location.ratings = []
+      let already_wrote_comment = false
       location.ratings.forEach(item => {
+            if (item.created_by_username === this.username) {
+              already_wrote_comment = true
+            }
             if (!map.has(item.rating)) {
               map.set(item.rating, 1)
             } else {
@@ -340,6 +347,7 @@ export default {
 
           }
       )
+      this.location.already_wrote_comment = already_wrote_comment
       // clear categories and series data
       this.chartOptions.xaxis.categories.splice(0)
       this.series[0]['data'].splice(0)
