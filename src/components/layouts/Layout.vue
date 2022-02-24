@@ -127,9 +127,50 @@
           </div>
         </div>
         <div class="write-comment-container">
-          <v-btn class="write-comment-btn" style="text-transform: none !important">
-            Write Comment
-          </v-btn>
+
+          <v-dialog
+              width="500"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  small
+                  v-bind="attrs"
+                  v-on="on"
+                  class="write-comment-btn" style="text-transform: none !important"
+              >
+                Write Comment
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="text-h5 grey lighten-2">
+                Add Comment
+              </v-card-title>
+
+              <v-textarea
+                  solo
+                  label="write your comment"
+                  required
+
+              ></v-textarea>
+              <!--                <v-divider></v-divider>-->
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="#BDBDBD"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                    color="primary"
+                >
+                  Submit
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+
         </div>
         <v-list class="comment-list-container">
 
