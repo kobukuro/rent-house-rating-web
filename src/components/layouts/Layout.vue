@@ -144,16 +144,19 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title class="text-h5 grey lighten-2">
-                Add Comment
+              <v-card-title class="text-h5 grey lighten-2" style="display: flex;justify-content: center;">
+                <span>{{ location.address }}</span>
               </v-card-title>
-
+              <v-card-title class="text-h5 grey lighten-2" style="display: flex;justify-content: center;">
+                <span>{{ location.owner_name }}</span>
+              </v-card-title>
               <v-textarea
                   solo
                   label="write your comment"
                   required
-
-              ></v-textarea>
+                  v-model="location.self_comment"
+              >
+              </v-textarea>
               <!--                <v-divider></v-divider>-->
 
               <v-card-actions>
@@ -218,9 +221,11 @@ export default {
       ],
       location: {
         address: '',
+        owner_name: '',
         rating_average: 0,
         ratings: [],
-        already_wrote_comment: false
+        already_wrote_comment: false,
+        self_comment: ''
       },
       is_side_navigation_drawer_show: false,
       side_navigation_drawer_items: [
@@ -316,6 +321,7 @@ export default {
       console.log(location)
       this.is_side_navigation_drawer_show = true
       this.location.address = location.address
+      this.location.owner_name = location.ownerName
       this.side_navigation_drawer_items.forEach(item => {
         if (item.title === 'Address') {
           item.value = location.address
@@ -337,6 +343,7 @@ export default {
       location.ratings.forEach(item => {
             if (item.created_by_username === this.username) {
               already_wrote_comment = true
+              this.location.self_comment = item.comment
             }
             if (!map.has(item.rating)) {
               map.set(item.rating, 1)
@@ -348,6 +355,10 @@ export default {
           }
       )
       this.location.already_wrote_comment = already_wrote_comment
+      if(!already_wrote_comment)
+      {
+        this.location.self_comment = ''
+      }
       // clear categories and series data
       this.chartOptions.xaxis.categories.splice(0)
       this.series[0]['data'].splice(0)
