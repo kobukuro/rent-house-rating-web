@@ -103,7 +103,7 @@
               v-for="item in side_navigation_drawer_items"
               :key="item.title"
               link>
-            <v-list-item-icon >
+            <v-list-item-icon>
               <v-icon class="list-icon">{{ item.icon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-content class="list-value">
@@ -122,11 +122,17 @@
                            :show-rating="false"></star-rating>
             </div>
             <div class="number-rating">
-                <p>{{ location.rating_average }}</p>
+              <p>{{ location.rating_average }}</p>
             </div>
           </div>
         </div>
+        <div class="write-comment-container">
+          <v-btn class="write-comment-btn" style="text-transform: none !important">
+            Write Comment
+          </v-btn>
+        </div>
         <v-list class="comment-list-container">
+
           <v-list-item v-for="(item, index) in location.ratings" :key="index">
             <v-card class="comment-card">
               <p>{{ item.created_by_username }}</p>
@@ -388,6 +394,19 @@ export default {
 .comment-list-container {
   display: flex;
   flex-direction: column;
+
+}
+
+.write-comment-container {
+  display: flex;
+  justify-content: center;
+}
+
+.write-comment-btn {
+  /*btn寬度隨著內容調整*/
+  display: inline-flex
+
+
 }
 
 .comment-card {
@@ -395,5 +414,6 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
 
 </style>
