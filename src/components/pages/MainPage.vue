@@ -67,34 +67,35 @@
                 <v-card-title class="text-h5 grey lighten-2">
                   Add Location
                 </v-card-title>
+                <form>
+                  <v-text-field
+                      v-model="locationToAdd.address"
+                      label="address"
+                      required
+                  ></v-text-field>
+                  <v-text-field
+                      v-model="locationToAdd.ownerName"
+                      label="ownerName"
+                      required
+                  ></v-text-field>
+                  <!--                <v-divider></v-divider>-->
 
-                <v-text-field
-                    v-model="locationToAdd.address"
-                    label="address"
-                    required
-                ></v-text-field>
-                <v-text-field
-                    v-model="locationToAdd.ownerName"
-                    label="ownerName"
-                    required
-                ></v-text-field>
-                <!--                <v-divider></v-divider>-->
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                      color="#BDBDBD"
-                      @click="dialog = false"
-                  >
-                    Cancel
-                  </v-btn>
-                  <v-btn
-                      color="primary"
-                      @click="addLocation"
-                  >
-                    Submit
-                  </v-btn>
-                </v-card-actions>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="#BDBDBD"
+                        @click="dialog = false"
+                    >
+                      Cancel
+                    </v-btn>
+                    <v-btn
+                        color="primary"
+                        @click="addLocation"
+                    >
+                      Submit
+                    </v-btn>
+                  </v-card-actions>
+                </form>
               </v-card>
             </v-dialog>
           </div>
@@ -149,12 +150,19 @@ import {getUserName} from "@/utils/auth";
 import {location_api} from "@/api";
 import axios from "axios";
 // import ContextMenu from './ContextMenu';
+import {required} from 'vuelidate/lib/validators'
 
 export default {
   name: "App",
   // components: {ContextMenu},
+  validations: {
+    owner_name: {required},
+  },
   data() {
     return {
+      rules: {
+        required: value => !!value || 'Required.',
+      },
       dialog: false,
       locationToAdd: {
         country_name: '',
@@ -269,6 +277,7 @@ export default {
       this.$refs['addRatingModal'].show()
     },
     addLocation() {
+
       location_api.post('locations', {
         country_id: this.locationToAdd.country_id,
         address: this.locationToAdd.address,
@@ -321,7 +330,14 @@ export default {
     },
     location_data() {
       return this.$store.getters['location/location_data']
-    }
+    },
+    nameErrors () {
+        const errors = []
+        if (!this.$v.owner_name.$dirty) return errors
+        !this.$v.owner_name.maxLength && errors.push('Name must be at most 10 characters long')
+        !this.$v.owner_name.required && errors.push('Name is required.')
+        return errors
+      },
   },
 
   mounted() {

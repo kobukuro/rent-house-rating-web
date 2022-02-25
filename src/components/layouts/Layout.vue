@@ -129,6 +129,7 @@
         <div class="write-comment-container">
 
           <v-dialog
+              v-model="add_rating_dialog"
               width="500"
           >
             <template v-slot:activator="{ on, attrs }">
@@ -172,6 +173,7 @@
                 <v-spacer></v-spacer>
                 <v-btn
                     color="#BDBDBD"
+                    @click="add_rating_dialog = false"
                 >
                   Cancel
                 </v-btn>
@@ -223,6 +225,7 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
+      add_rating_dialog: false,
       star_read_only: true,
       notifications: [
         {id: 1, title: 'Click Me'},
@@ -415,20 +418,21 @@ export default {
                 index = i;
               }
             }
+            let curr_time = new Date();
+            curr_time = curr_time.toUTCString()
             let rating_obj = {
               rating: this.location.self_rating,
               comment: this.location.self_comment,
-              created_by_username: this.username
+              created_by_username: this.username,
+              created_at: curr_time
             }
             this.$store.dispatch('location/add_rating', {index, rating_obj})
             rating_obj['created_by_username'] = this.username
+            rating_obj['created_at'] = curr_time
             this.location.ratings.push(rating_obj)
-            this.test()
+            //  TODO PETER 必須更新平均rating
           })
     },
-    test(){
-      console.log(123)
-    }
   },
   computed: {
     username() {
