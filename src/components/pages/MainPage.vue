@@ -67,16 +67,18 @@
                 <v-card-title class="text-h5 grey lighten-2">
                   Add Location
                 </v-card-title>
-                <form>
+                <v-form ref="form">
                   <v-text-field
                       v-model="locationToAdd.address"
                       label="address"
                       required
+                      :rules="inputRules"
                   ></v-text-field>
                   <v-text-field
                       v-model="locationToAdd.ownerName"
                       label="ownerName"
                       required
+                      :rules="inputRules"
                   ></v-text-field>
                   <!--                <v-divider></v-divider>-->
 
@@ -95,7 +97,7 @@
                       Submit
                     </v-btn>
                   </v-card-actions>
-                </form>
+                </v-form>
               </v-card>
             </v-dialog>
           </div>
@@ -150,19 +152,18 @@ import {getUserName} from "@/utils/auth";
 import {location_api} from "@/api";
 import axios from "axios";
 // import ContextMenu from './ContextMenu';
-import {required} from 'vuelidate/lib/validators'
+
 
 export default {
   name: "App",
   // components: {ContextMenu},
-  validations: {
-    owner_name: {required},
-  },
+
   data() {
     return {
-      rules: {
-        required: value => !!value || 'Required.',
-      },
+      inputRules: [
+        v => !!v || 'This field is required',
+      ]
+      ,
       dialog: false,
       locationToAdd: {
         country_name: '',
@@ -277,25 +278,26 @@ export default {
       this.$refs['addRatingModal'].show()
     },
     addLocation() {
-
-      location_api.post('locations', {
-        country_id: this.locationToAdd.country_id,
-        address: this.locationToAdd.address,
-        owner_name: this.locationToAdd.ownerName,
-        lat: this.locationToAdd.lat,
-        lng: this.locationToAdd.lng
-      })
-          .then(res => {
-            let element = {
-              id: res.data.id,
-              address: this.locationToAdd.address,
-              local: [this.locationToAdd.lat, this.locationToAdd.lng],
-              ownerName: this.locationToAdd.ownerName,
-              ratings: []
-            }
-            this.$store.dispatch('location/add_location', element)
-            this.dialog = false
-          })
+      if (this.$refs.form.validate()) {
+        location_api.post('locations', {
+          country_id: this.locationToAdd.country_id,
+          address: this.locationToAdd.address,
+          owner_name: this.locationToAdd.ownerName,
+          lat: this.locationToAdd.lat,
+          lng: this.locationToAdd.lng
+        })
+            .then(res => {
+              let element = {
+                id: res.data.id,
+                address: this.locationToAdd.address,
+                local: [this.locationToAdd.lat, this.locationToAdd.lng],
+                ownerName: this.locationToAdd.ownerName,
+                ratings: []
+              }
+              this.$store.dispatch('location/add_location', element)
+              this.dialog = false
+            })
+      }
     },
     addRating() {
       location_api.post('ratings', {
@@ -331,13 +333,13 @@ export default {
     location_data() {
       return this.$store.getters['location/location_data']
     },
-    nameErrors () {
-        const errors = []
-        if (!this.$v.owner_name.$dirty) return errors
-        !this.$v.owner_name.maxLength && errors.push('Name must be at most 10 characters long')
-        !this.$v.owner_name.required && errors.push('Name is required.')
-        return errors
-      },
+    nameErrors() {
+      const errors = []
+      if (!this.$v.owner_name.$dirty) return errors
+      !this.$v.owner_name.maxLength && errors.push('Name must be at most 10 characters long')
+      !this.$v.owner_name.required && errors.push('Name is required.')
+      return errors
+    },
   },
 
   mounted() {
