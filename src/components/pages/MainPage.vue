@@ -109,7 +109,7 @@
         </l-popup>
       </l-marker>
       <!-- 創建標記點 -->
-      <l-marker :lat-lng="item.local" v-for="item in data" :key="item.id" @click="clickMarker(item)">
+      <l-marker :lat-lng="item.local" v-for="item in location_data" :key="item.id" @click="clickMarker(item)">
         <!-- 標記點樣式判斷 -->
         <l-icon
             :icon-url="item.address === '夢時代購物中心'?icon.type.gold:icon.type.black"
@@ -284,32 +284,32 @@ export default {
               ownerName: this.locationToAdd.ownerName,
               ratings: []
             }
-            this.data.push(element)
+            this.$store.dispatch('location/add_location', element)
             this.dialog = false
           })
     },
-    addRating() {
-      location_api.post('ratings', {
-        location_id: this.ratingToAdd.location_id,
-        rating: this.ratingToAdd.rating,
-        comment: this.ratingToAdd.comment
-      })
-          .then(res => {
-            console.log(res)
-            let index = 0
-            for (var i = 0; i < this.data.length; i++) {
-              if (this.data[i].id === this.ratingToAdd.location_id) {
-                index = i;
-              }
-            }
-            let tmp = {
-              rating: this.ratingToAdd.rating,
-              comment: this.ratingToAdd.comment
-            }
-            this.data[index].ratings.push(tmp)
-          })
-
-    },
+    // addRating() {
+    //   location_api.post('ratings', {
+    //     location_id: this.ratingToAdd.location_id,
+    //     rating: this.ratingToAdd.rating,
+    //     comment: this.ratingToAdd.comment
+    //   })
+    //       .then(res => {
+    //         console.log(res)
+    //         let index = 0
+    //         for (var i = 0; i < this.data.length; i++) {
+    //           if (this.data[i].id === this.ratingToAdd.location_id) {
+    //             index = i;
+    //           }
+    //         }
+    //         let tmp = {
+    //           rating: this.ratingToAdd.rating,
+    //           comment: this.ratingToAdd.comment
+    //         }
+    //         this.data[index].ratings.push(tmp)
+    //       })
+    //
+    // },
     clickMarker(location) {
       this.$emit('markerClicked', location)
       this.ratingToAdd.location_id = location.id
@@ -320,6 +320,9 @@ export default {
     username() {
       return getUserName()
     },
+    location_data() {
+      return this.$store.getters['location/location_data']
+    }
   },
 
   mounted() {
@@ -333,6 +336,7 @@ export default {
         // 將目前的位置的標記點彈跳視窗打開
         this.$refs.location.mapObject.openPopup();
       });
+      this.$store.dispatch('location/clear_locations')
       //將db中的location資料放到data中
       location_api.get('/locations')
           .then(res => {
@@ -346,7 +350,7 @@ export default {
                       local: [element.lat, element.lng],
                       ownerName: element.owner_name
                     };
-                    this.data.push(location_to_add)
+                    this.$store.dispatch('location/add_location', location_to_add)
                   })
             })
           })

@@ -177,6 +177,7 @@
                 </v-btn>
                 <v-btn
                     color="primary"
+                    @click="addRating"
                 >
                   Submit
                 </v-btn>
@@ -215,6 +216,7 @@
 import {getUserName, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
 import StarRating from 'vue-star-rating'
+import {location_api} from "@/api";
 
 export default {
   name: "Layout",
@@ -229,6 +231,7 @@ export default {
         {id: 4, title: 'Click Me 2'}
       ],
       location: {
+        location_id:-1,
         address: '',
         owner_name: '',
         rating_average: 0,
@@ -331,6 +334,7 @@ export default {
       console.log(location)
       this.is_side_navigation_drawer_show = true
       this.location.address = location.address
+      this.location.id = location.id
       this.location.owner_name = location.ownerName
       this.side_navigation_drawer_items.forEach(item => {
         if (item.title === 'Address') {
@@ -393,6 +397,29 @@ export default {
       }
       this.location.rating_average = total / count
 
+    },
+    addRating() {
+      // console.log('addRating')
+      location_api.post('ratings', {
+        location_id: this.location.location_id,
+        rating: this.location.self_rating,
+        comment: this.location.self_comment
+      })
+          .then(res => {
+            console.log(res)
+            let index = 0
+            //要傳到MainPage裡的data
+            for (var i = 0; i < this.data.length; i++) {
+              if (this.data[i].id === this.ratingToAdd.location_id) {
+                index = i;
+              }
+            }
+            let tmp = {
+              rating: this.ratingToAdd.rating,
+              comment: this.ratingToAdd.comment
+            }
+            this.data[index].ratings.push(tmp)
+          })
     }
   },
   computed: {

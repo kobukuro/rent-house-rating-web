@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from 'vuex-persistedstate'
 import userStoreModule from "@/store/module/user"
+import locationStoreModule from "@/store/module/location"
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ const store = new Vuex.Store({
 
     modules: {
         user: userStoreModule,
+        location: locationStoreModule
     },
 
 })
