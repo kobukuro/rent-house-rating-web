@@ -150,11 +150,20 @@
               <v-card-title class="text-h5 grey lighten-2" style="display: flex;justify-content: center;">
                 <span>{{ location.owner_name }}</span>
               </v-card-title>
+              <div class="give-rating">
+                <star-rating v-bind:read-only="false"
+                             v-bind:show-rating="false"
+                             v-bind:star-size="35"
+                             v-model="location.self_rating"
+                >
+                </star-rating>
+              </div>
               <v-textarea
                   solo
                   label="write your comment"
                   required
                   v-model="location.self_comment"
+                  style="padding-top: 1em"
               >
               </v-textarea>
               <!--                <v-divider></v-divider>-->
@@ -225,7 +234,8 @@ export default {
         rating_average: 0,
         ratings: [],
         already_wrote_comment: false,
-        self_comment: ''
+        self_comment: '',
+        self_rating: 0
       },
       is_side_navigation_drawer_show: false,
       side_navigation_drawer_items: [
@@ -344,6 +354,8 @@ export default {
             if (item.created_by_username === this.username) {
               already_wrote_comment = true
               this.location.self_comment = item.comment
+              this.location.self_rating = item.rating
+
             }
             if (!map.has(item.rating)) {
               map.set(item.rating, 1)
@@ -355,9 +367,9 @@ export default {
           }
       )
       this.location.already_wrote_comment = already_wrote_comment
-      if(!already_wrote_comment)
-      {
+      if (!already_wrote_comment) {
         this.location.self_comment = ''
+        this.location.self_rating = 0
       }
       // clear categories and series data
       this.chartOptions.xaxis.categories.splice(0)
@@ -475,5 +487,9 @@ export default {
   margin-bottom: 10px;
 }
 
+.give-rating {
+  display: flex;
+  justify-content: center;
+}
 
 </style>
