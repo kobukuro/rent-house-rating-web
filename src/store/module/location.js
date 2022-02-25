@@ -13,6 +13,9 @@ const mutations = {
     ADD_LOACTION: (state, new_location_data) => {
         state.location_data.push(new_location_data)
     },
+    ADD_RATING: (state, payload) => {
+        state.location_data[payload.index]['ratings'].push(payload.rating_obj)
+    }
 }
 const actions = {
     clear_locations({commit}) {
@@ -20,6 +23,9 @@ const actions = {
     },
     add_location({commit}, new_location_data) {
         commit('ADD_LOACTION', new_location_data)
+    },
+    add_rating({commit}, payload) {
+        commit('ADD_RATING', payload)
     },
 }
 const getters = {

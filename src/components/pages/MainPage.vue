@@ -288,32 +288,31 @@ export default {
             this.dialog = false
           })
     },
-    // addRating() {
-    //   location_api.post('ratings', {
-    //     location_id: this.ratingToAdd.location_id,
-    //     rating: this.ratingToAdd.rating,
-    //     comment: this.ratingToAdd.comment
-    //   })
-    //       .then(res => {
-    //         console.log(res)
-    //         let index = 0
-    //         for (var i = 0; i < this.data.length; i++) {
-    //           if (this.data[i].id === this.ratingToAdd.location_id) {
-    //             index = i;
-    //           }
-    //         }
-    //         let tmp = {
-    //           rating: this.ratingToAdd.rating,
-    //           comment: this.ratingToAdd.comment
-    //         }
-    //         this.data[index].ratings.push(tmp)
-    //       })
-    //
-    // },
+    addRating() {
+      location_api.post('ratings', {
+        location_id: this.ratingToAdd.location_id,
+        rating: this.ratingToAdd.rating,
+        comment: this.ratingToAdd.comment
+      })
+          .then(res => {
+            console.log(res)
+            let index = 0
+            for (var i = 0; i < this.data.length; i++) {
+              if (this.data[i].id === this.ratingToAdd.location_id) {
+                index = i;
+              }
+            }
+            let tmp = {
+              rating: this.ratingToAdd.rating,
+              comment: this.ratingToAdd.comment
+            }
+            this.data[index].ratings.push(tmp)
+          })
+
+    },
     clickMarker(location) {
       this.$emit('markerClicked', location)
       this.ratingToAdd.location_id = location.id
-
     }
   },
   computed: {

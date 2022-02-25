@@ -231,7 +231,7 @@ export default {
         {id: 4, title: 'Click Me 2'}
       ],
       location: {
-        location_id:-1,
+        location_id: -1,
         address: '',
         owner_name: '',
         rating_average: 0,
@@ -334,7 +334,7 @@ export default {
       console.log(location)
       this.is_side_navigation_drawer_show = true
       this.location.address = location.address
-      this.location.id = location.id
+      this.location.location_id = location.id
       this.location.owner_name = location.ownerName
       this.side_navigation_drawer_items.forEach(item => {
         if (item.title === 'Address') {
@@ -399,6 +399,7 @@ export default {
 
     },
     addRating() {
+      console.log(this.location.location_id)
       // console.log('addRating')
       location_api.post('ratings', {
         location_id: this.location.location_id,
@@ -406,20 +407,27 @@ export default {
         comment: this.location.self_comment
       })
           .then(res => {
+
             console.log(res)
             let index = 0
-            //要傳到MainPage裡的data
-            for (var i = 0; i < this.data.length; i++) {
-              if (this.data[i].id === this.ratingToAdd.location_id) {
+            for (var i = 0; i < this.location_data.length; i++) {
+              if (this.location_data[i].id === this.location.location_id) {
                 index = i;
               }
             }
-            let tmp = {
-              rating: this.ratingToAdd.rating,
-              comment: this.ratingToAdd.comment
+            let rating_obj = {
+              rating: this.location.self_rating,
+              comment: this.location.self_comment,
+              created_by_username: this.username
             }
-            this.data[index].ratings.push(tmp)
+            this.$store.dispatch('location/add_rating', {index, rating_obj})
+            rating_obj['created_by_username'] = this.username
+            this.location.ratings.push(rating_obj)
+            this.test()
           })
+    },
+    test(){
+      console.log(123)
     }
   },
   computed: {
@@ -428,6 +436,9 @@ export default {
     },
     email() {
       return getEmail()
+    },
+    location_data() {
+      return this.$store.getters['location/location_data']
     }
   }
 }
