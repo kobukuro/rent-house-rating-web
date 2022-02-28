@@ -178,13 +178,6 @@ export default {
       },
       showContextMenu: false,
       showModal: false,
-      // 模擬資料
-      data: [
-        {id: 0, address: "夢時代購物中心", local: [22.595153, 120.306923], owner_name: '', ratings: []},
-        {id: -1, address: "漢神百貨", local: [22.61942, 120.296386], owner_name: '', ratings: []},
-        {id: -2, address: "漢神巨蛋", local: [22.669603, 120.302288], owner_name: '', ratings: []},
-        {id: -3, address: "大統百貨", local: [22.630748, 120.318033], owner_name: '', ratings: []}
-      ],
 
       zoom: 13,
       center: [22.612961, 120.304167],

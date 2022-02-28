@@ -113,7 +113,7 @@
         </v-list>
         <div class="rating-container">
           <div class="graph">
-            <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
+            <apexchart ref="chart" type="bar" :options="chartOptions" :series="series"></apexchart>
           </div>
           <div class="beside-graph">
             <div class="star-rating">
@@ -225,6 +225,7 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
+      rating_labels: [5, 4, 3, 2, 1],
       add_rating_dialog: false,
       star_read_only: true,
       notifications: [
@@ -392,6 +393,8 @@ export default {
       })
       key_array.forEach(item => this.chartOptions.xaxis.categories.push(item));
       value_array.forEach(item => this.series[0]['data'].push(item));
+      console.log(this.chartOptions.xaxis.categories)
+      console.log(this.series[0]['data'])
       let total = 0
       let count = 0
       for (let i = 0; i < key_array.length; i++) {
@@ -431,7 +434,14 @@ export default {
             rating_obj['created_at'] = curr_time
             this.location.ratings.push(rating_obj)
             //  TODO PETER 必須更新平均rating
+            this.series[0]['data'][this.rating_labels.indexOf(this.location.self_rating)] += 1
+            this.updateSeriesLine();
           })
+    },
+    updateSeriesLine() {
+      this.$refs.chart.updateSeries([{
+        data: this.series[0].data,
+      }], false, true);
     },
   },
   computed: {
