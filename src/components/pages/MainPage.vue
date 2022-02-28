@@ -67,17 +67,15 @@
                 <v-card-title class="text-h5 grey lighten-2">
                   Add Location
                 </v-card-title>
-                <v-form ref="form">
+                <v-form ref="add_location_form">
                   <v-text-field
                       v-model="locationToAdd.address"
                       label="address"
-                      required
                       :rules="inputRules"
                   ></v-text-field>
                   <v-text-field
                       v-model="locationToAdd.ownerName"
                       label="ownerName"
-                      required
                       :rules="inputRules"
                   ></v-text-field>
                   <!--                <v-divider></v-divider>-->
@@ -278,7 +276,7 @@ export default {
       this.$refs['addRatingModal'].show()
     },
     addLocation() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.add_location_form.validate()) {
         location_api.post('locations', {
           country_id: this.locationToAdd.country_id,
           address: this.locationToAdd.address,
@@ -332,13 +330,6 @@ export default {
     },
     location_data() {
       return this.$store.getters['location/location_data']
-    },
-    nameErrors() {
-      const errors = []
-      if (!this.$v.owner_name.$dirty) return errors
-      !this.$v.owner_name.maxLength && errors.push('Name must be at most 10 characters long')
-      !this.$v.owner_name.required && errors.push('Name is required.')
-      return errors
     },
   },
 
