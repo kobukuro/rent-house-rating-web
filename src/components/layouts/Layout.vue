@@ -434,6 +434,7 @@ export default {
             rating_obj['created_at'] = curr_time
             this.location.ratings.push(rating_obj)
             this.series[0]['data'][this.rating_labels.indexOf(this.location.self_rating)] += 1
+            // 更新chart的Series
             this.updateSeriesLine();
             let key_array = this.chartOptions.xaxis.categories;
             let value_array = this.series[0]['data']
