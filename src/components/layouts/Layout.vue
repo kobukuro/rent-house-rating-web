@@ -370,6 +370,8 @@ export default {
             } else {
               map.set(item.rating, map.get(item.rating) + 1)
             }
+            item.created_at = this.format_time(item.created_at)
+            console.log(item.created_at)
             this.location.ratings.push(item)
 
           }
@@ -402,7 +404,28 @@ export default {
         total += key_array[i] * value_array[i]
       }
       this.location.rating_average = total / count
-      // TODO 要處理一下時間格式
+    },
+    format_time(input) {
+      console.log(input)
+
+      //2022-02-28T09:22:04.068220Z
+      //Mon, 28 Feb 2022 09:22:04 GMT
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ];
+      const fullMonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ];
+      const day_names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      if(day_names.includes(input.substring(0, 3)))
+      {
+        return input
+      }
+      const date = new Date(`${fullMonthNames[parseInt(input.split('-')[1], 10) - 1]} ${input.split('-')[2].split('T')[0]}, ${input.split('-')[0]}`);
+      const day_index = date.getDay();
+      // Sunday - Saturday : 0 - 6
+      // ${monthNames[input.split('-')[1]+1]} ${input.split('-')[0]}
+      return `${day_names[day_index]}, ${input.split('-')[2].split('T')[0]} ${monthNames[parseInt(input.split('-')[1], 10) - 1]} ${input.split('-')[0]} ${input.split('T')[1].split('.')[0]} GMT`
     },
     addRating() {
       console.log(this.location.location_id)
