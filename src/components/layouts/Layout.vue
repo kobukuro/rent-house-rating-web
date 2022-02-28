@@ -402,7 +402,7 @@ export default {
         total += key_array[i] * value_array[i]
       }
       this.location.rating_average = total / count
-
+      // TODO 要處理一下時間格式
     },
     addRating() {
       console.log(this.location.location_id)
@@ -433,9 +433,19 @@ export default {
             rating_obj['created_by_username'] = this.username
             rating_obj['created_at'] = curr_time
             this.location.ratings.push(rating_obj)
-            //  TODO PETER 必須更新平均rating
             this.series[0]['data'][this.rating_labels.indexOf(this.location.self_rating)] += 1
             this.updateSeriesLine();
+            let key_array = this.chartOptions.xaxis.categories;
+            let value_array = this.series[0]['data']
+            console.log(this.chartOptions.xaxis.categories)
+            console.log(this.series[0]['data'])
+            let total = 0
+            let count = 0
+            for (let i = 0; i < key_array.length; i++) {
+              count += value_array[i]
+              total += key_array[i] * value_array[i]
+            }
+            this.location.rating_average = total / count
           })
     },
     updateSeriesLine() {
