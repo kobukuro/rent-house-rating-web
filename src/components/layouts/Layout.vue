@@ -470,6 +470,7 @@ export default {
               total += key_array[i] * value_array[i]
             }
             this.location.rating_average = total / count
+            this.location.already_wrote_comment = true
           })
     },
     updateSeriesLine() {
