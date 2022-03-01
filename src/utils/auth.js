@@ -14,6 +14,10 @@ export let getUserName = function () {
     return store.state.user.username
 }
 
+export let getUserId = function () {
+    return store.state.user.user_id
+}
+
 export let getEmail = function () {
     return store.state.user.email
 }

@@ -179,7 +179,7 @@
                 </v-btn>
                 <v-btn
                     color="primary"
-                    @click="addRating"
+                    @click="location.already_wrote_comment ? editRating() : addRating()"
                 >
                   Submit
                 </v-btn>
@@ -215,7 +215,7 @@
 </template>
 
 <script>
-import {getUserName, getEmail} from "@/utils/auth";
+import {getUserName, getUserId, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
 import StarRating from 'vue-star-rating'
 import {location_api} from "@/api";
@@ -417,8 +417,7 @@ export default {
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
       ];
       const day_names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-      if(day_names.includes(input.substring(0, 3)))
-      {
+      if (day_names.includes(input.substring(0, 3))) {
         return input
       }
       const date = new Date(`${fullMonthNames[parseInt(input.split('-')[1], 10) - 1]} ${input.split('-')[2].split('T')[0]}, ${input.split('-')[0]}`);
@@ -471,7 +470,68 @@ export default {
             }
             this.location.rating_average = total / count
             this.location.already_wrote_comment = true
+            this.add_rating_dialog = false
           })
+    },
+    editRating() {
+      // console.log(this.user_id)
+      location_api.get(`ratings?location_id=${this.location.location_id}&created_by=${this.user_id}`)
+          .then(res => {
+            let rating_id = res.data[0].id
+            // console.log(rating_id)
+            location_api.patch(`ratings/${rating_id}`, {
+              rating: this.location.self_rating,
+              comment: this.location.self_comment
+            }).then(res => {
+              console.log(res)
+              let index = 0
+              for (var i = 0; i < this.location_data.length; i++) {
+                if (this.location_data[i].id === this.location.location_id) {
+                  index = i;
+                }
+              }
+              let curr_time = new Date();
+              curr_time = curr_time.toUTCString()
+              let rating_obj = {
+                rating: this.location.self_rating,
+                comment: this.location.self_comment,
+                created_at: curr_time
+              }
+              this.$store.dispatch('location/edit_rating', {index, rating_obj})
+
+              rating_obj['created_by_username'] = this.username
+              let original_rating = 0
+              for (let i = 0; i < this.location.ratings.length; i++) {
+                if (this.location.ratings[i].created_by_username === this.username) {
+                  original_rating = this.location.ratings[i].rating
+                  this.location.ratings[i].rating = this.location.self_rating;
+                  this.location.ratings[i].comment = this.location.self_comment;
+                  this.location.ratings[i].created_at = curr_time;
+
+                }
+
+              }
+              this.series[0]['data'][this.rating_labels.indexOf(original_rating)] -= 1
+              this.series[0]['data'][this.rating_labels.indexOf(this.location.self_rating)] += 1
+              // 更新chart的Series
+              this.updateSeriesLine();
+              let key_array = this.chartOptions.xaxis.categories;
+              let value_array = this.series[0]['data']
+              console.log(this.chartOptions.xaxis.categories)
+              console.log(this.series[0]['data'])
+              let total = 0
+              let count = 0
+              for (let i = 0; i < key_array.length; i++) {
+                count += value_array[i]
+                total += key_array[i] * value_array[i]
+              }
+              this.location.rating_average = total / count
+              this.location.already_wrote_comment = true
+              this.add_rating_dialog = false
+            })
+          })
+
+
     },
     updateSeriesLine() {
       this.$refs.chart.updateSeries([{
@@ -482,6 +542,9 @@ export default {
   computed: {
     username() {
       return getUserName()
+    },
+    user_id() {
+      return getUserId()
     },
     email() {
       return getEmail()
