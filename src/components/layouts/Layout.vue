@@ -198,7 +198,7 @@
 
                 <v-spacer></v-spacer>
 
-                <v-menu
+                <v-menu v-if="item.created_by_username === username"
                     bottom
                     left
                 >
@@ -212,13 +212,19 @@
                       <v-icon color="black">mdi-dots-vertical</v-icon>
                     </v-btn>
                   </template>
-
                   <v-list>
                     <v-list-item
-                        v-for="(item, i) in items"
+                        v-for="(item, i) in self_card_actions"
                         :key="i"
                     >
-                      <v-list-item-title>{{ item.title }}</v-list-item-title>
+                      <v-list-item-title>
+                        <v-btn icon
+                        @click="deleteRating">
+                          <v-icon>
+                            mdi-delete
+                          </v-icon>
+                        </v-btn>
+                      </v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -254,11 +260,8 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
-      items: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
+      self_card_actions: [
+        {title: 'Click Me'},
       ],
       rating_labels: [5, 4, 3, 2, 1],
       add_rating_dialog: false,
@@ -567,6 +570,9 @@ export default {
           })
 
 
+    },
+    deleteRating(){
+      console.log('delete rating')
     },
     updateSeriesLine() {
       this.$refs.chart.updateSeries([{
