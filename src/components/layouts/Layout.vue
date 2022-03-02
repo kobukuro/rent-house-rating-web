@@ -193,7 +193,36 @@
 
           <v-list-item v-for="(item, index) in location.ratings" :key="index">
             <v-card class="comment-card">
-              <p>{{ item.created_by_username }}</p>
+              <v-card-title>
+                <span>{{ item.created_by_username }}</span>
+
+                <v-spacer></v-spacer>
+
+                <v-menu
+                    bottom
+                    left
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        dark
+                        icon
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                      <v-icon color="black">mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list>
+                    <v-list-item
+                        v-for="(item, i) in items"
+                        :key="i"
+                    >
+                      <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </v-card-title>
               <p>
                 <star-rating v-bind:read-only="true"
                              v-bind:show-rating="false"
@@ -225,6 +254,12 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
+      items: [
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me 2' },
+      ],
       rating_labels: [5, 4, 3, 2, 1],
       add_rating_dialog: false,
       star_read_only: true,
