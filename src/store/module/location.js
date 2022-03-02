@@ -21,6 +21,9 @@ const mutations = {
         state.location_data[payload.index]['ratings']['comment'] = payload.rating_obj.comment
         state.location_data[payload.index]['ratings']['created_at'] = payload.rating_obj.created_at
     },
+    UPDATE_LOCATION_RATINGS: (state, payload) => {
+        state.location_data[payload.index]['ratings'] = payload.ratings
+    }
 }
 const actions = {
     clear_locations({commit}) {
@@ -35,6 +38,9 @@ const actions = {
     edit_rating({commit}, payload) {
         commit('EDIT_RATING', payload)
     },
+    update_location_ratings({commit}, payload) {
+        commit('UPDATE_LOCATION_RATINGS', payload)
+    }
 }
 const getters = {
     location_data(state) {

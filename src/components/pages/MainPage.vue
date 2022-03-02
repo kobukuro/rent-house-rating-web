@@ -313,6 +313,7 @@ export default {
 
     },
     clickMarker(location) {
+      //TODO 需要重新抓此location的rating資料
       this.$emit('markerClicked', location)
       this.ratingToAdd.location_id = location.id
     }
