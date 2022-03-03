@@ -254,7 +254,7 @@ import {getUserName, getUserId, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
 import StarRating from 'vue-star-rating'
 import {location_api} from "@/api";
-import {createRating, partialUpdateRating, deleteRating} from "@/api/location";
+import {listRatings, createRating, partialUpdateRating, deleteRating} from "@/api/location";
 import {findIndexByColumnValue} from "@/utils/common";
 
 export default {
@@ -431,7 +431,6 @@ export default {
       location_api.get(`ratings?location_id=${this.location.location_id}&created_by=${this.user_id}`)
           .then(res => {
             let rating_id = res.data[0].id
-            // console.log(rating_id)
             const form = {
               rating: this.location.self_rating,
               comment: this.location.self_comment
@@ -453,7 +452,6 @@ export default {
       location_api.get(`ratings?location_id=${this.location.location_id}&created_by=${this.user_id}`)
           .then(res => {
             let rating_id = res.data[0].id
-            // console.log(rating_id)
             deleteRating(rating_id)
                 .then(res => {
                   if (res.status === 204) {
@@ -464,7 +462,8 @@ export default {
     },
     updateLocationData() {
       //從DB取得此location_id的rating資料
-      location_api.get('ratings?location_id=' + this.location.location_id)
+      let params = {location_id: this.location.location_id}
+      listRatings(params)
           .then(res => {
             let index = findIndexByColumnValue(this.location_data, 'id', this.location.location_id)
             let ratings = res.data
