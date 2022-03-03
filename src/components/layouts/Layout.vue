@@ -254,7 +254,7 @@ import {getUserName, getUserId, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
 import StarRating from 'vue-star-rating'
 import {location_api} from "@/api";
-import {createRating} from "@/api/location";
+import {createRating, partialUpdateRating, deleteRating} from "@/api/location";
 import {findIndexByColumnValue} from "@/utils/common";
 
 export default {
@@ -390,7 +390,7 @@ export default {
       this.updateLocationData()
     },
     format_time(input) {
-      console.log(input)
+      // console.log(input)
 
       //2022-02-28T09:22:04.068220Z
       //Mon, 28 Feb 2022 09:22:04 GMT
@@ -411,7 +411,7 @@ export default {
       return `${day_names[day_index]}, ${input.split('-')[2].split('T')[0]} ${monthNames[parseInt(input.split('-')[1], 10) - 1]} ${input.split('-')[0]} ${input.split('T')[1].split('.')[0]} GMT`
     },
     addRating() {
-      console.log(this.location.location_id)
+      // console.log(this.location.location_id)
       // console.log('addRating')
       let form = {
         location_id: this.location.location_id,
@@ -420,10 +420,10 @@ export default {
       }
       createRating(form)
           .then(res => {
-            console.log(res)
-            this.updateLocationData()
-            this.add_rating_dialog = false
-
+            if (res.status === 201) {
+              this.updateLocationData()
+              this.add_rating_dialog = false
+            }
           })
     },
     editRating() {
@@ -432,29 +432,33 @@ export default {
           .then(res => {
             let rating_id = res.data[0].id
             // console.log(rating_id)
-            location_api.patch(`ratings/${rating_id}`, {
+            const form = {
               rating: this.location.self_rating,
               comment: this.location.self_comment
-            }).then(res => {
-              console.log(res.data)
-              this.updateLocationData()
-              this.add_rating_dialog = false
+            }
+            partialUpdateRating(rating_id, form)
+                .then(res => {
+                  if (res.status === 200) {
+                    this.updateLocationData()
+                    this.add_rating_dialog = false
+                  }
 
-            })
+                })
           })
 
 
     },
     deleteRating() {
-      console.log('delete rating')
+      // console.log('delete rating')
       location_api.get(`ratings?location_id=${this.location.location_id}&created_by=${this.user_id}`)
           .then(res => {
             let rating_id = res.data[0].id
             // console.log(rating_id)
-            location_api.delete(`ratings/${rating_id}`, {})
+            deleteRating(rating_id)
                 .then(res => {
-                  console.log(res)
-                  this.updateLocationData()
+                  if (res.status === 204) {
+                    this.updateLocationData()
+                  }
                 })
           })
     },
