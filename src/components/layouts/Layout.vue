@@ -449,11 +449,11 @@ export default {
           .then(res => {
             let rating_id = res.data[0].id
             // console.log(rating_id)
-            location_api.delete(`ratings/${rating_id}`, {}).then(res => {
-              console.log(res)
-              // TODO 要更新前端資料
-              // TODO 要重撈資料庫資料 因為有可能有其他人的資料
-            })
+            location_api.delete(`ratings/${rating_id}`, {})
+                .then(res => {
+                  console.log(res)
+                  this.updateLocationData()
+                })
           })
     },
     updateLocationData() {
