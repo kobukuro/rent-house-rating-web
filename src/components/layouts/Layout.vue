@@ -435,50 +435,7 @@ export default {
               comment: this.location.self_comment
             }).then(res => {
               console.log(res.data)
-              // TODO 要重撈資料庫資料 因為有可能有其他人的資料
-              let index = 0
-              for (var i = 0; i < this.location_data.length; i++) {
-                if (this.location_data[i].id === this.location.location_id) {
-                  index = i;
-                }
-              }
-              let curr_time = new Date();
-              curr_time = curr_time.toUTCString()
-              let rating_obj = {
-                rating: this.location.self_rating,
-                comment: this.location.self_comment,
-                created_at: curr_time
-              }
-              this.$store.dispatch('location/edit_rating', {index, rating_obj})
-
-              rating_obj['created_by_username'] = this.username
-              let original_rating = 0
-              for (let i = 0; i < this.location.ratings.length; i++) {
-                if (this.location.ratings[i].created_by_username === this.username) {
-                  original_rating = this.location.ratings[i].rating
-                  this.location.ratings[i].rating = this.location.self_rating;
-                  this.location.ratings[i].comment = this.location.self_comment;
-                  this.location.ratings[i].created_at = curr_time;
-
-                }
-
-              }
-              this.series[0]['data'][this.rating_labels.indexOf(original_rating)] -= 1
-              this.series[0]['data'][this.rating_labels.indexOf(this.location.self_rating)] += 1
-              // 更新chart的Series
-              this.updateSeriesLine();
-              let key_array = this.chartOptions.xaxis.categories;
-              let value_array = this.series[0]['data']
-              console.log(this.chartOptions.xaxis.categories)
-              console.log(this.series[0]['data'])
-              let total = 0
-              let count = 0
-              for (let i = 0; i < key_array.length; i++) {
-                count += value_array[i]
-                total += key_array[i] * value_array[i]
-              }
-              this.location.rating_average = total / count
-              this.location.already_wrote_comment = true
+              this.updateLocationData()
               this.add_rating_dialog = false
 
             })
@@ -550,6 +507,8 @@ export default {
             })
             key_array.forEach(item => this.chartOptions.xaxis.categories.push(item));
             value_array.forEach(item => this.series[0]['data'].push(item));
+            // 更新chart的Series
+            this.updateSeriesLine();
             // console.log(this.chartOptions.xaxis.categories)
             // console.log(this.series[0]['data'])
             // 計算平均
