@@ -254,6 +254,7 @@ import {getUserName, getUserId, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
 import StarRating from 'vue-star-rating'
 import {location_api} from "@/api";
+import {findIndexByColumnValue} from "@/utils/common";
 
 export default {
   name: "Layout",
@@ -373,7 +374,6 @@ export default {
     },
     //這個是從MainPage的clickMarker裡傳過來的
     onClickMarker(location) {
-      console.log(location)
       this.is_side_navigation_drawer_show = true
       this.location.address = location.address
       this.location.location_id = location.id
@@ -386,62 +386,7 @@ export default {
           item.value = location.ownerName
         }
       })
-
-      // console.log(location.ratings)
-      let map = new Map();
-      map.set(1, 0)
-      map.set(2, 0)
-      map.set(3, 0)
-      map.set(4, 0)
-      map.set(5, 0)
-      this.location.ratings = []
-      let already_wrote_comment = false
-      location.ratings.forEach(item => {
-            if (item.created_by_username === this.username) {
-              already_wrote_comment = true
-              this.location.self_comment = item.comment
-              this.location.self_rating = item.rating
-
-            }
-            if (!map.has(item.rating)) {
-              map.set(item.rating, 1)
-            } else {
-              map.set(item.rating, map.get(item.rating) + 1)
-            }
-            item.created_at = this.format_time(item.created_at)
-            console.log(item.created_at)
-            this.location.ratings.push(item)
-
-          }
-      )
-      this.location.already_wrote_comment = already_wrote_comment
-      if (!already_wrote_comment) {
-        this.location.self_comment = ''
-        this.location.self_rating = 0
-      }
-      // clear categories and series data
-      this.chartOptions.xaxis.categories.splice(0)
-      this.series[0]['data'].splice(0)
-      let mapAsc = new Map([...map.entries()].sort());
-      let mapDec = new Map([...mapAsc.entries()].reverse());
-      let key_array = []
-      let value_array = []
-      mapDec.forEach(function (value, key) {
-        // console.log(key, value)
-        key_array.push(key)
-        value_array.push(value)
-      })
-      key_array.forEach(item => this.chartOptions.xaxis.categories.push(item));
-      value_array.forEach(item => this.series[0]['data'].push(item));
-      console.log(this.chartOptions.xaxis.categories)
-      console.log(this.series[0]['data'])
-      let total = 0
-      let count = 0
-      for (let i = 0; i < key_array.length; i++) {
-        count += value_array[i]
-        total += key_array[i] * value_array[i]
-      }
-      this.location.rating_average = total / count
+      this.updateLocationData()
     },
     format_time(input) {
       console.log(input)
@@ -473,105 +418,10 @@ export default {
         comment: this.location.self_comment
       })
           .then(res => {
-
             console.log(res)
-            location_api.get('/ratings?location_id=' + this.location.location_id)
-                .then(res => {
-                  // console.log(res.data)
+            this.updateLocationData()
+            this.add_rating_dialog = false
 
-                  let index = 0
-                  for (var i = 0; i < this.location_data.length; i++) {
-                    if (this.location_data[i].id === this.location.location_id) {
-                      index = i;
-                    }
-                  }
-                  let ratings = res.data
-                  this.$store.dispatch('location/update_location_ratings', {index, ratings})
-                  // console.log(location.ratings)
-                  let map = new Map();
-                  map.set(1, 0)
-                  map.set(2, 0)
-                  map.set(3, 0)
-                  map.set(4, 0)
-                  map.set(5, 0)
-                  this.location.ratings = []
-                  let already_wrote_comment = false
-                  ratings.forEach(item => {
-                        if (item.created_by_username === this.username) {
-                          already_wrote_comment = true
-                          this.location.self_comment = item.comment
-                          this.location.self_rating = item.rating
-
-                        }
-                        if (!map.has(item.rating)) {
-                          map.set(item.rating, 1)
-                        } else {
-                          map.set(item.rating, map.get(item.rating) + 1)
-                        }
-                        item.created_at = this.format_time(item.created_at)
-                        console.log(item.created_at)
-                        this.location.ratings.push(item)
-
-                      }
-                  )
-                  this.location.already_wrote_comment = already_wrote_comment
-                  if (!already_wrote_comment) {
-                    this.location.self_comment = ''
-                    this.location.self_rating = 0
-                  }
-                  // clear categories and series data
-                  this.chartOptions.xaxis.categories.splice(0)
-                  this.series[0]['data'].splice(0)
-                  let mapAsc = new Map([...map.entries()].sort());
-                  let mapDec = new Map([...mapAsc.entries()].reverse());
-                  let key_array = []
-                  let value_array = []
-                  mapDec.forEach(function (value, key) {
-                    // console.log(key, value)
-                    key_array.push(key)
-                    value_array.push(value)
-                  })
-                  key_array.forEach(item => this.chartOptions.xaxis.categories.push(item));
-                  value_array.forEach(item => this.series[0]['data'].push(item));
-                  console.log(this.chartOptions.xaxis.categories)
-                  console.log(this.series[0]['data'])
-                  let total = 0
-                  let count = 0
-                  for (let i = 0; i < key_array.length; i++) {
-                    count += value_array[i]
-                    total += key_array[i] * value_array[i]
-                  }
-                  this.location.rating_average = total / count
-
-                  // let curr_time = new Date();
-                  // curr_time = curr_time.toUTCString()
-                  // let rating_obj = {
-                  //   rating: this.location.self_rating,
-                  //   comment: this.location.self_comment,
-                  //   created_by_username: this.username,
-                  //   created_at: curr_time
-                  // }
-                  // this.$store.dispatch('location/add_rating', {index, rating_obj})
-                  // rating_obj['created_by_username'] = this.username
-                  // rating_obj['created_at'] = curr_time
-                  // this.location.ratings.push(rating_obj)
-                  // this.series[0]['data'][this.rating_labels.indexOf(this.location.self_rating)] += 1
-                  // // 更新chart的Series
-                  // this.updateSeriesLine();
-                  // let key_array = this.chartOptions.xaxis.categories;
-                  // let value_array = this.series[0]['data']
-                  // console.log(this.chartOptions.xaxis.categories)
-                  // console.log(this.series[0]['data'])
-                  // let total = 0
-                  // let count = 0
-                  // for (let i = 0; i < key_array.length; i++) {
-                  //   count += value_array[i]
-                  //   total += key_array[i] * value_array[i]
-                  // }
-                  // this.location.rating_average = total / count
-                  // this.location.already_wrote_comment = true
-                  this.add_rating_dialog = false
-                })
           })
     },
     editRating() {
@@ -650,7 +500,67 @@ export default {
           })
     },
     updateLocationData() {
+      //從DB取得此location_id的rating資料
+      location_api.get('ratings?location_id=' + this.location.location_id)
+          .then(res => {
+            let index = findIndexByColumnValue(this.location_data, 'id', this.location.location_id)
+            let ratings = res.data
+            //更新vuex的此location_id的rating資料
+            this.$store.dispatch('location/update_location_ratings', {index, ratings})
+            //初始化Map, 初始值為key:1~5, value皆為0, 用於計算各個rating個數
+            let map = new Map();
+            for (let i = 1; i <= 5; i++) {
+              map.set(i, 0)
+            }
+            this.location.ratings = []
+            let already_wrote_comment = false
+            ratings.forEach(item => {
+                  if (item.created_by_username === this.username) {
+                    already_wrote_comment = true
+                    this.location.self_comment = item.comment
+                    this.location.self_rating = item.rating
 
+                  }
+                  if (!map.has(item.rating)) {
+                    map.set(item.rating, 1)
+                  } else {
+                    map.set(item.rating, map.get(item.rating) + 1)
+                  }
+                  item.created_at = this.format_time(item.created_at)
+                  this.location.ratings.push(item)
+
+                }
+            )
+            this.location.already_wrote_comment = already_wrote_comment
+            if (!already_wrote_comment) {
+              this.location.self_comment = ''
+              this.location.self_rating = 0
+            }
+            // clear categories and series data
+            this.chartOptions.xaxis.categories.splice(0)
+            this.series[0]['data'].splice(0)
+            let mapAsc = new Map([...map.entries()].sort());
+            let mapDec = new Map([...mapAsc.entries()].reverse());
+            let key_array = []
+            let value_array = []
+            mapDec.forEach(function (value, key) {
+              // console.log(key, value)
+              key_array.push(key)
+              value_array.push(value)
+            })
+            key_array.forEach(item => this.chartOptions.xaxis.categories.push(item));
+            value_array.forEach(item => this.series[0]['data'].push(item));
+            // console.log(this.chartOptions.xaxis.categories)
+            // console.log(this.series[0]['data'])
+            // 計算平均
+            let total = 0
+            let count = 0
+            for (let i = 0; i < key_array.length; i++) {
+              count += value_array[i]
+              total += key_array[i] * value_array[i]
+            }
+            this.location.rating_average = total / count
+          })
     },
     updateSeriesLine() {
       this.$refs.chart.updateSeries([{
