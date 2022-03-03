@@ -254,6 +254,7 @@ import {getUserName, getUserId, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
 import StarRating from 'vue-star-rating'
 import {location_api} from "@/api";
+import {createRating} from "@/api/location";
 import {findIndexByColumnValue} from "@/utils/common";
 
 export default {
@@ -412,11 +413,12 @@ export default {
     addRating() {
       console.log(this.location.location_id)
       // console.log('addRating')
-      location_api.post('ratings', {
+      let form = {
         location_id: this.location.location_id,
         rating: this.location.self_rating,
         comment: this.location.self_comment
-      })
+      }
+      createRating(form)
           .then(res => {
             console.log(res)
             this.updateLocationData()
