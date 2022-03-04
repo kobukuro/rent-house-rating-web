@@ -1,5 +1,20 @@
 <template>
   <div class="layout-default">
+    <v-snackbar
+        v-model="snackbar"
+    >
+      {{ message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+            icon
+            v-bind="attrs"
+            @click="snackbar = false"
+        >
+          <v-icon>close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
     <!--    <el-header height="auto">-->
     <!--      <el-row>-->
     <!--        <div class="right-menu">-->
@@ -209,7 +224,7 @@
                               <span>Are you sure to delete this comment?</span>
                             </v-card-title>
                             <v-card-actions style="display: flex;justify-content: center;">
-<!--                              <v-spacer></v-spacer>-->
+                              <!--                              <v-spacer></v-spacer>-->
                               <v-btn
                                   color="#BDBDBD"
                                   @click="delete_rating_dialog = false"
@@ -263,6 +278,8 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
+      snackbar: false,
+      message: '',
       self_card_actions: [
         {title: 'Click Me'},
       ],
@@ -419,6 +436,7 @@ export default {
             if (res.status === 201) {
               this.updateLocationData()
               this.add_rating_dialog = false
+              this.showSnackBar('Add comment successfully.')
             }
           })
     },
@@ -436,6 +454,7 @@ export default {
                   if (res.status === 200) {
                     this.updateLocationData()
                     this.add_rating_dialog = false
+                    this.showSnackBar('Edit comment successfully.')
                   }
 
                 })
@@ -452,9 +471,14 @@ export default {
                 .then(res => {
                   if (res.status === 204) {
                     this.updateLocationData()
+                    this.showSnackBar('Delete comment successfully.')
                   }
                 })
           })
+    },
+    showSnackBar(message){
+      this.snackbar = true
+      this.message = message
     },
     updateLocationData() {
       //從DB取得此location_id的rating資料
