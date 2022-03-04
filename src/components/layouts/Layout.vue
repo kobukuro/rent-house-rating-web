@@ -190,12 +190,41 @@
                         :key="i"
                     >
                       <v-list-item-title>
-                        <v-btn icon
-                               @click="deleteRating">
-                          <v-icon>
-                            mdi-delete
-                          </v-icon>
-                        </v-btn>
+                        <v-dialog
+                            v-model="delete_rating_dialog"
+                            width="500"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn icon
+                                   v-bind="attrs"
+                                   v-on="on"
+                            >
+                              <v-icon>
+                                mdi-delete
+                              </v-icon>
+                            </v-btn>
+                          </template>
+                          <v-card>
+                            <v-card-title class="text-h5 grey lighten-2" style="display: flex;justify-content: center;">
+                              <span>Are you sure to delete this comment?</span>
+                            </v-card-title>
+                            <v-card-actions style="display: flex;justify-content: center;">
+<!--                              <v-spacer></v-spacer>-->
+                              <v-btn
+                                  color="#BDBDBD"
+                                  @click="delete_rating_dialog = false"
+                              >
+                                Cancel
+                              </v-btn>
+                              <v-btn
+                                  color="primary"
+                                  @click="deleteRating"
+                              >
+                                Sure
+                              </v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
                       </v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -239,6 +268,7 @@ export default {
       ],
       rating_labels: [5, 4, 3, 2, 1],
       add_rating_dialog: false,
+      delete_rating_dialog: false,
       star_read_only: true,
       location: {
         location_id: -1,
