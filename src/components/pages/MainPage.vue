@@ -1,33 +1,5 @@
 <template>
   <div id="app">
-    <b-modal @ok="addLocation" ref="addLocationModal">
-      <b-form-row>
-        <b-form-text>
-          address
-        </b-form-text>
-        <b-form-input v-model="locationToAdd.address"></b-form-input>
-      </b-form-row>
-      <b-form-row>
-        <b-form-text>
-          owner name
-        </b-form-text>
-        <b-form-input v-model="locationToAdd.ownerName"></b-form-input>
-      </b-form-row>
-    </b-modal>
-    <b-modal @ok="addRating" ref="addRatingModal">
-      <b-form-row>
-        <b-form-text>
-          rating
-        </b-form-text>
-        <b-form-input v-model="ratingToAdd.rating"></b-form-input>
-      </b-form-row>
-      <b-form-row>
-        <b-form-text>
-          comment
-        </b-form-text>
-        <b-form-input v-model="ratingToAdd.comment"></b-form-input>
-      </b-form-row>
-    </b-modal>
     <!-- 初始化地圖設定 -->
     <l-map
         ref="myMap"
@@ -261,13 +233,6 @@ export default {
             console.log(err.response)
           })
     },
-    showLocationModalMethod() {
-      //要加上自動抓取的地址
-      // this.$refs['addLocationModal'].show()
-    },
-    showRatingModalMethod() {
-      this.$refs['addRatingModal'].show()
-    },
     addLocation() {
       if (this.$refs.add_location_form.validate()) {
         location_api.post('locations', {
@@ -289,28 +254,6 @@ export default {
               this.dialog = false
             })
       }
-    },
-    addRating() {
-      location_api.post('ratings', {
-        location_id: this.ratingToAdd.location_id,
-        rating: this.ratingToAdd.rating,
-        comment: this.ratingToAdd.comment
-      })
-          .then(res => {
-            console.log(res)
-            let index = 0
-            for (var i = 0; i < this.data.length; i++) {
-              if (this.data[i].id === this.ratingToAdd.location_id) {
-                index = i;
-              }
-            }
-            let tmp = {
-              rating: this.ratingToAdd.rating,
-              comment: this.ratingToAdd.comment
-            }
-            this.data[index].ratings.push(tmp)
-          })
-
     },
     clickMarker(location) {
       //TODO 需要重新抓此location的rating資料
