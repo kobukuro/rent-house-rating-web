@@ -445,10 +445,7 @@
         </v-list>
       </v-navigation-drawer>
     </nav>
-    <el-main>
-
       <main-page style="position: relative; z-index: 3" @markerClicked="onClickMarker"/>
-    </el-main>
   </div>
 </template>
 
