@@ -1,5 +1,20 @@
 <template>
   <div id="app">
+    <v-snackbar
+        v-model="snackbar"
+    >
+      {{ message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+            icon
+            v-bind="attrs"
+            @click="snackbar = false"
+        >
+          <v-icon>close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
     <!-- 初始化地圖設定 -->
     <l-map
         ref="myMap"
@@ -130,6 +145,8 @@ export default {
 
   data() {
     return {
+      snackbar: false,
+      message: '',
       inputRules: [
         v => !!v || 'This field is required',
       ]
@@ -192,6 +209,10 @@ export default {
     };
   },
   methods: {
+    showSnackBar(message){
+      this.snackbar = true
+      this.message = message
+    },
     addMarker(event) {
       console.log(event.latlng);
     },
@@ -252,6 +273,7 @@ export default {
               }
               this.$store.dispatch('location/add_location', element)
               this.dialog = false
+              this.showSnackBar('Add location successfully.')
             })
       }
     },
