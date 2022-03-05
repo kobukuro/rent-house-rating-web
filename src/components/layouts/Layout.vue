@@ -83,14 +83,41 @@
                            overlay-opacity="0"
                            width="500"
                            height="100%">
-        <!-- TODO delete location btn 要加上確認視窗       -->
         <div class="delete-location-btn-container"
              v-if="is_only_self_comment">
-          <v-btn small
-                 style="text-transform: none !important"
-                 @click="deleteLocation">
-            Delete Location
-          </v-btn>
+          <v-dialog
+              v-model="delete_location_dialog"
+              width="500"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn small
+                     style="text-transform: none !important"
+                     v-bind="attrs"
+                     v-on="on">
+                Delete Location
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="text-h5 grey lighten-2" style="display: flex;justify-content: center;">
+                <span>Are you sure to delete this location?</span>
+              </v-card-title>
+              <v-card-actions style="display: flex;justify-content: center;">
+                <!--                              <v-spacer></v-spacer>-->
+                <v-btn
+                    color="#BDBDBD"
+                    @click="delete_location_dialog = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    @click="deleteLocation"
+                >
+                  Sure
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </div>
         <v-list
             dense
@@ -438,6 +465,7 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
+      delete_location_dialog: false,
       snackbar: false,
       message: '',
       self_card_actions: [
