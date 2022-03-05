@@ -240,7 +240,7 @@ export default {
               auto_address += res.data.address.road
             }
             this.locationToAdd.address = auto_address
-            console.log(res.data.address)
+            // console.log(res.data.address)
             location_api.get('countries')
                 .then(res => {
                   res.data.forEach(element => {
@@ -269,7 +269,8 @@ export default {
                 address: this.locationToAdd.address,
                 local: [this.locationToAdd.lat, this.locationToAdd.lng],
                 ownerName: this.locationToAdd.ownerName,
-                ratings: []
+                ratings: [],
+                createdByUserName: this.username
               }
               this.$store.dispatch('location/add_location', element)
               this.dialog = false
@@ -306,6 +307,7 @@ export default {
       //將db中的location資料放到data中
       location_api.get('/locations')
           .then(res => {
+            // console.log(res.data)
             res.data.forEach(element => {
               location_api.get('/ratings?location_id=' + element.id)
                   .then(res => {
@@ -314,7 +316,8 @@ export default {
                       ratings: res.data,
                       address: element.address,
                       local: [element.lat, element.lng],
-                      ownerName: element.owner_name
+                      ownerName: element.owner_name,
+                      createdByUserName:element.created_by_username
                     };
                     this.$store.dispatch('location/add_location', location_to_add)
                   })

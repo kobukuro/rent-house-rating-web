@@ -13,6 +13,17 @@ const mutations = {
     ADD_LOACTION: (state, new_location_data) => {
         state.location_data.push(new_location_data)
     },
+    DELETE_LOCATION: (state, payload) => {
+        let index = -1
+        for (let i = 0; i < state.location_data.length; i++) {
+            if (state.location_data[i].id === payload.location_id) {
+                index = i;
+            }
+        }
+        if (index !== -1) {
+            state.location_data.splice(index, 1);
+        }
+    },
     ADD_RATING: (state, payload) => {
         state.location_data[payload.index]['ratings'].push(payload.rating_obj)
     },
@@ -31,6 +42,9 @@ const actions = {
     },
     add_location({commit}, new_location_data) {
         commit('ADD_LOACTION', new_location_data)
+    },
+    delete_location({commit}, payload) {
+        commit('DELETE_LOCATION', payload)
     },
     add_rating({commit}, payload) {
         commit('ADD_RATING', payload)

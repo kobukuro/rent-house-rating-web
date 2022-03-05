@@ -83,6 +83,15 @@
                            overlay-opacity="0"
                            width="500"
                            height="100%">
+        <!-- TODO delete location btn 要加上確認視窗       -->
+        <div class="delete-location-btn-container"
+             v-if="is_only_self_comment">
+          <v-btn small
+                 style="text-transform: none !important"
+                 @click="deleteLocation">
+            Delete Location
+          </v-btn>
+        </div>
         <v-list
             dense
             nav>
@@ -421,7 +430,7 @@ import {getUserName, getUserId, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
 import StarRating from 'vue-star-rating'
 import {location_api} from "@/api";
-import {listRatings, createRating, partialUpdateRating, deleteRating} from "@/api/location";
+import {deleteLocation, listRatings, createRating, partialUpdateRating, deleteRating} from "@/api/location";
 import {findIndexByColumnValue} from "@/utils/common";
 
 export default {
@@ -446,7 +455,8 @@ export default {
         ratings: [],
         already_wrote_comment: false,
         self_comment: '',
-        self_rating: 0
+        self_rating: 0,
+        createdByUserName: ''
       },
       is_side_navigation_drawer_show: false,
       side_navigation_drawer_items: [
@@ -539,10 +549,12 @@ export default {
     },
     //這個是從MainPage的clickMarker裡傳過來的
     onClickMarker(location) {
+      // console.log(location)
       this.is_side_navigation_drawer_show = true
       this.location.address = location.address
       this.location.location_id = location.id
       this.location.owner_name = location.ownerName
+      this.location.createdByUserName = location.createdByUserName
       this.side_navigation_drawer_items.forEach(item => {
         if (item.title === 'Address') {
           item.value = location.address
@@ -551,7 +563,7 @@ export default {
           item.value = location.ownerName
         }
       })
-      this.updateLocationData()
+      this.updateLocationRatingData()
     },
     format_time(input) {
       // console.log(input)
@@ -574,6 +586,22 @@ export default {
       // ${monthNames[input.split('-')[1]+1]} ${input.split('-')[0]}
       return `${day_names[day_index]}, ${input.split('-')[2].split('T')[0]} ${monthNames[parseInt(input.split('-')[1], 10) - 1]} ${input.split('-')[0]} ${input.split('T')[1].split('.')[0]} GMT`
     },
+    deleteLocation() {
+      let location_id = this.location.location_id
+      // console.log(location_id)
+      deleteLocation(location_id)
+          .then(res => {
+            if (res.status === 204) {
+              let payload = {
+                location_id: this.location.location_id
+              }
+              // this.updateLocationData()
+              this.$store.dispatch('location/delete_location', payload)
+              this.is_side_navigation_drawer_show = false
+              this.showSnackBar('Delete location successfully.')
+            }
+          })
+    },
     addRating() {
       // console.log(this.location.location_id)
       // console.log('addRating')
@@ -585,7 +613,7 @@ export default {
       createRating(form)
           .then(res => {
             if (res.status === 201) {
-              this.updateLocationData()
+              this.updateLocationRatingData()
               this.add_rating_dialog = false
               this.showSnackBar('Add comment successfully.')
             }
@@ -603,7 +631,7 @@ export default {
             partialUpdateRating(rating_id, form)
                 .then(res => {
                   if (res.status === 200) {
-                    this.updateLocationData()
+                    this.updateLocationRatingData()
                     this.add_rating_dialog = false
                     this.showSnackBar('Edit comment successfully.')
                   }
@@ -621,7 +649,7 @@ export default {
             deleteRating(rating_id)
                 .then(res => {
                   if (res.status === 204) {
-                    this.updateLocationData()
+                    this.updateLocationRatingData()
                     this.showSnackBar('Delete comment successfully.')
                   }
                 })
@@ -631,7 +659,7 @@ export default {
       this.snackbar = true
       this.message = message
     },
-    updateLocationData() {
+    updateLocationRatingData() {
       //從DB取得此location_id的rating資料
       let params = {location_id: this.location.location_id}
       // console.log(this.location.location_id)
@@ -704,6 +732,7 @@ export default {
         data: this.series[0].data,
       }], false, true);
     },
+
   },
   computed: {
     username() {
@@ -717,6 +746,28 @@ export default {
     },
     location_data() {
       return this.$store.getters['location/location_data']
+    },
+    is_only_self_comment() {
+      let res = false
+      if (this.location.createdByUserName === this.username) {
+        if (this.location.ratings.length === 0) {
+          res = true
+        }
+        if (this.location.ratings.length > 1) {
+          res = false
+        }
+        if (this.location.ratings.length === 1) {
+          if (this.location.ratings[0].created_by_username === this.username) {
+            res = true
+          } else {
+            res = false
+          }
+
+        }
+      } else {
+        res = false
+      }
+      return res
     }
   }
 }
@@ -818,6 +869,12 @@ export default {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
+}
+
+.delete-location-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 </style>

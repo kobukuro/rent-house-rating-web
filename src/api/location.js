@@ -1,5 +1,9 @@
 import {location_api} from "@/api/index";
 
+export function deleteLocation(pk) {
+    return location_api.delete(`locations/${pk}`)
+}
+
 export function listRatings(params) {
     return location_api.get('/ratings', {params: params})
 }
