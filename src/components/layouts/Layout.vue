@@ -176,10 +176,94 @@
 
 
         </div>
+        <!-- self comment -->
+        <v-list class="comment-list-container">
+          <v-list-item v-for="(item, index) in location.ratings" :key="index">
+            <v-card class="comment-card"
+                    v-if="item.created_by_username === username">
+              <h5>Your comment</h5>
+              <v-card-title>
+                <span>{{ item.created_by_username }}</span>
+
+                <v-spacer></v-spacer>
+
+                <v-menu v-if="item.created_by_username === username"
+                        bottom
+                        left
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        dark
+                        icon
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                      <v-icon color="black">mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-item
+                        v-for="(item, i) in self_card_actions"
+                        :key="i"
+                    >
+                      <v-list-item-title>
+                        <v-dialog
+                            v-model="delete_rating_dialog"
+                            width="500"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn icon
+                                   v-bind="attrs"
+                                   v-on="on"
+                            >
+                              <v-icon>
+                                mdi-delete
+                              </v-icon>
+                            </v-btn>
+                          </template>
+                          <v-card>
+                            <v-card-title class="text-h5 grey lighten-2" style="display: flex;justify-content: center;">
+                              <span>Are you sure to delete this comment?</span>
+                            </v-card-title>
+                            <v-card-actions style="display: flex;justify-content: center;">
+                              <!--                              <v-spacer></v-spacer>-->
+                              <v-btn
+                                  color="#BDBDBD"
+                                  @click="delete_rating_dialog = false"
+                              >
+                                Cancel
+                              </v-btn>
+                              <v-btn
+                                  color="primary"
+                                  @click="deleteRating"
+                              >
+                                Sure
+                              </v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
+                      </v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </v-card-title>
+              <p>
+                <star-rating v-bind:read-only="true"
+                             v-bind:show-rating="false"
+                             v-bind:star-size="15"
+                             v-model="item.rating"></star-rating>
+              </p>
+              <p>{{ item.comment }}</p>
+              <p>{{ item.created_at }}</p>
+            </v-card>
+          </v-list-item>
+        </v-list>
+        <!-- comment of other people -->
         <v-list class="comment-list-container">
 
           <v-list-item v-for="(item, index) in location.ratings" :key="index">
-            <v-card class="comment-card">
+            <v-card class="comment-card"
+                    v-if="item.created_by_username !== username">
               <v-card-title>
                 <span>{{ item.created_by_username }}</span>
 
@@ -476,7 +560,7 @@ export default {
                 })
           })
     },
-    showSnackBar(message){
+    showSnackBar(message) {
       this.snackbar = true
       this.message = message
     },
