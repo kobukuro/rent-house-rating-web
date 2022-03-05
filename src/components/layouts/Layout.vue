@@ -113,7 +113,8 @@
             </div>
           </div>
         </div>
-        <div class="write-comment-container">
+        <div class="write-comment-container"
+             v-if="!location.already_wrote_comment">
 
           <v-dialog
               v-model="add_rating_dialog"
@@ -126,8 +127,7 @@
                   v-on="on"
                   class="write-comment-btn" style="text-transform: none !important"
               >
-                <span v-if="location.already_wrote_comment">Edit comment</span>
-                <span v-else>Write Comment</span>
+                <span>Write Comment</span>
 
               </v-btn>
             </template>
@@ -166,7 +166,7 @@
                 </v-btn>
                 <v-btn
                     color="primary"
-                    @click="location.already_wrote_comment ? editRating() : addRating()"
+                    @click="addRating()"
                 >
                   Submit
                 </v-btn>
@@ -255,6 +255,65 @@
               </p>
               <p>{{ item.comment }}</p>
               <p>{{ item.created_at }}</p>
+              <div class="edit-comment-container">
+                <v-dialog
+                    v-model="add_rating_dialog"
+                    width="500"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        small
+                        v-bind="attrs"
+                        v-on="on"
+                        class="write-comment-btn" style="text-transform: none !important"
+                    >
+                      <span>Edit Comment</span>
+
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title class="text-h5 grey lighten-2" style="display: flex;justify-content: center;">
+                      <span>{{ location.address }}</span>
+                    </v-card-title>
+                    <v-card-title class="text-h5 grey lighten-2" style="display: flex;justify-content: center;">
+                      <span>{{ location.owner_name }}</span>
+                    </v-card-title>
+                    <div class="give-rating">
+                      <star-rating v-bind:read-only="false"
+                                   v-bind:show-rating="false"
+                                   v-bind:star-size="35"
+                                   v-model="location.self_rating"
+                      >
+                      </star-rating>
+                    </div>
+                    <v-textarea
+                        solo
+                        label="write your comment"
+                        required
+                        v-model="location.self_comment"
+                        style="padding-top: 1em"
+                    >
+                    </v-textarea>
+                    <!--                <v-divider></v-divider>-->
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                          color="#BDBDBD"
+                          @click="add_rating_dialog = false"
+                      >
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                          color="primary"
+                          @click="editRating()"
+                      >
+                        Submit
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </div>
             </v-card>
           </v-list-item>
         </v-list>
@@ -739,6 +798,12 @@ export default {
 .give-rating {
   display: flex;
   justify-content: center;
+}
+
+.edit-comment-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
 </style>
