@@ -483,10 +483,12 @@ export default {
     updateLocationData() {
       //從DB取得此location_id的rating資料
       let params = {location_id: this.location.location_id}
+      // console.log(this.location.location_id)
       listRatings(params)
           .then(res => {
             let index = findIndexByColumnValue(this.location_data, 'id', this.location.location_id)
             let ratings = res.data
+            // console.log(ratings)
             //更新vuex的此location_id的rating資料
             this.$store.dispatch('location/update_location_ratings', {index, ratings})
             //初始化Map, 初始值為key:1~5, value皆為0, 用於計算各個rating個數

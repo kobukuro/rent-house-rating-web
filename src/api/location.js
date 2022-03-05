@@ -1,6 +1,6 @@
 import {location_api} from "@/api/index";
 
-export function listRatings(pk, params) {
+export function listRatings(params) {
     return location_api.get('/ratings', {params: params})
 }
 
