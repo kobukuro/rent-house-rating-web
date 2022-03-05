@@ -110,6 +110,14 @@
             </div>
             <div class="number-rating">
               <p>{{ location.rating_average }}</p>
+              <div class="number-total-comment">
+                <div v-if="location.ratings.length<=1">
+                  {{ location.ratings.length }} comment
+                </div>
+                <div v-if="location.ratings.length>1">
+                  {{ location.ratings.length }} comments
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -764,11 +772,17 @@ export default {
   height: 85%;
   /*border: steelblue 1px solid;*/
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   /*水平置中*/
   justify-content: center;
   /*垂直置中*/
   align-items: center;
+}
+
+.number-total-comment {
+  font-family: Arial;
+  font-size: 15px;
 }
 
 .comment-list-container {
