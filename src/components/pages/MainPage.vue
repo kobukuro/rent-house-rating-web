@@ -43,6 +43,7 @@
                     icon
                     v-bind="attrs"
                     v-on="on"
+                    @click="clickAddLocationBtn"
                 >
                   <!--@click="showLocationModalMethod"-->
                   <v-icon dark>
@@ -209,7 +210,10 @@ export default {
     };
   },
   methods: {
-    showSnackBar(message){
+    clickAddLocationBtn() {
+      this.locationToAdd.ownerName = ''
+    },
+    showSnackBar(message) {
       this.snackbar = true
       this.message = message
     },
@@ -317,7 +321,7 @@ export default {
                       address: element.address,
                       local: [element.lat, element.lng],
                       ownerName: element.owner_name,
-                      createdByUserName:element.created_by_username
+                      createdByUserName: element.created_by_username
                     };
                     this.$store.dispatch('location/add_location', location_to_add)
                   })
