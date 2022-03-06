@@ -279,6 +279,7 @@ export default {
               this.$store.dispatch('location/add_location', element)
               this.dialog = false
               this.showSnackBar('Add location successfully.')
+              this.$refs.newLayerGroup.mapObject.closePopup()
             })
       }
     },
