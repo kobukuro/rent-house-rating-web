@@ -6,7 +6,7 @@ import store from './store'
 import '@/permission'
 import VueContext from 'vue-context';
 // 載入 vue2-leaflet，依照自己需要載入組件
-import {LMap, LTileLayer, LMarker, LPopup, LIcon, LLayerGroup} from "vue2-leaflet";
+import {LMap, LTileLayer, LMarker, LPopup, LIcon, LLayerGroup, LControlZoom} from "vue2-leaflet";
 // 載入 css
 import "leaflet/dist/leaflet.css";
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
@@ -35,6 +35,7 @@ Vue.component("l-icon", LIcon);
 Vue.component("l-layer-group", LLayerGroup);
 Vue.component('VIconAwesome', Icon)
 Vue.component('app-alert', AlertCmp)
+Vue.component('l-control-zoom', LControlZoom)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)

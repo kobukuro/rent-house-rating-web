@@ -27,7 +27,7 @@
       <v-toolbar
           dense
           floating
-          style="margin-top: 10px; margin-left: 50px; position:relative;z-index:1000;"
+          style="margin-top: 10px; margin-left: 10px; position:relative;z-index:1000;"
       >
         <v-text-field
             hide-details
@@ -51,7 +51,7 @@
                    x-large
 
                    icon
-                   >
+            >
               <v-icon>account_circle</v-icon>
             </v-btn>
           </template>
@@ -178,6 +178,8 @@
         <!--          </p>-->
         <!--        </l-popup>-->
       </l-marker>
+      <l-control-zoom position="bottomright"
+                      style="position:relative;z-index:1000;"></l-control-zoom>
     </l-map>
   </div>
 </template>
@@ -223,7 +225,7 @@ export default {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution: `© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors`,
       options: {
-        // zoomControl: false,
+        zoomControl: false,
         contextmenu: true,
         contextmenuWidth: 140,
         contextmenuItems: [{
