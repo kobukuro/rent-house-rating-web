@@ -13,6 +13,10 @@ const mutations = {
     ADD_LOACTION: (state, new_location_data) => {
         state.location_data.push(new_location_data)
     },
+    UPDATE_LOCATION:(state, payload) => {
+        state.location_data[payload.index].address = payload.address
+        state.location_data[payload.index].ownerName = payload.ownerName
+    },
     DELETE_LOCATION: (state, payload) => {
         let index = -1
         for (let i = 0; i < state.location_data.length; i++) {
@@ -42,6 +46,9 @@ const actions = {
     },
     add_location({commit}, new_location_data) {
         commit('ADD_LOACTION', new_location_data)
+    },
+    update_location({commit}, payload) {
+        commit('UPDATE_LOCATION', payload)
     },
     delete_location({commit}, payload) {
         commit('DELETE_LOCATION', payload)

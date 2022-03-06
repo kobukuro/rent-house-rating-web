@@ -1,5 +1,13 @@
 import {location_api} from "@/api/index";
 
+export function retrieveLocation(pk) {
+    return location_api.get(`locations/${pk}`)
+}
+
+export function partialUpdateLocation(pk, form, params) {
+    return location_api.patch(`locations/${pk}`, form, {params: params})
+}
+
 export function deleteLocation(pk) {
     return location_api.delete(`locations/${pk}`)
 }

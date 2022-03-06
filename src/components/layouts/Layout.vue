@@ -83,8 +83,55 @@
                            overlay-opacity="0"
                            width="500"
                            height="100%">
-        <div class="delete-location-btn-container"
+        <div class="edit-delete-location-btn-container"
              v-if="is_only_self_comment">
+          <v-dialog
+              v-model="edit_location_dialog"
+              width="500"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn small
+                     style="text-transform: none !important"
+                     v-bind="attrs"
+                     v-on="on">
+                Edit Location
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="text-h5 grey lighten-2">
+                Edit Location
+              </v-card-title>
+              <v-form ref="edit_location_form">
+                <v-text-field
+                    v-model="location.address"
+                    label="address"
+                    :rules="inputRules"
+                ></v-text-field>
+                <v-text-field
+                    v-model="location.owner_name"
+                    label="ownerName"
+                    :rules="inputRules"
+                ></v-text-field>
+                <!--                <v-divider></v-divider>-->
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      color="#BDBDBD"
+                      @click="edit_location_dialog = false"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                      color="primary"
+                      @click="editLocation"
+                  >
+                    Submit
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
+            </v-card>
+          </v-dialog>
           <v-dialog
               v-model="delete_location_dialog"
               width="500"
@@ -445,7 +492,7 @@
         </v-list>
       </v-navigation-drawer>
     </nav>
-      <main-page style="position: relative; z-index: 3" @markerClicked="onClickMarker"/>
+    <main-page style="position: relative; z-index: 3" @markerClicked="onClickMarker"/>
   </div>
 </template>
 
@@ -454,7 +501,10 @@ import {getUserName, getUserId, getEmail} from "@/utils/auth";
 import MainPage from "@/components/pages/MainPage";
 import StarRating from 'vue-star-rating'
 import {location_api} from "@/api";
-import {deleteLocation, listRatings, createRating, partialUpdateRating, deleteRating} from "@/api/location";
+import {
+  retrieveLocation, partialUpdateLocation, deleteLocation, listRatings, createRating,
+  partialUpdateRating, deleteRating
+} from "@/api/location";
 import {findIndexByColumnValue} from "@/utils/common";
 
 export default {
@@ -462,7 +512,11 @@ export default {
   components: {MainPage, StarRating},
   data() {
     return {
+      inputRules: [
+        v => !!v || 'This field is required',
+      ],
       delete_location_dialog: false,
+      edit_location_dialog: false,
       snackbar: false,
       message: '',
       self_card_actions: [
@@ -611,6 +665,25 @@ export default {
       // ${monthNames[input.split('-')[1]+1]} ${input.split('-')[0]}
       return `${day_names[day_index]}, ${input.split('-')[2].split('T')[0]} ${monthNames[parseInt(input.split('-')[1], 10) - 1]} ${input.split('-')[0]} ${input.split('T')[1].split('.')[0]} GMT`
     },
+    editLocation() {
+      if (this.$refs.edit_location_form.validate()) {
+        let location_id = this.location.location_id
+        const form = {
+          address: this.location.address,
+          owner_name: this.location.owner_name
+        }
+        partialUpdateLocation(location_id, form)
+            .then(res => {
+              if (res.status === 200) {
+                this.updateLocationData()
+                this.updateLocationRatingData()
+                this.edit_location_dialog = false
+                this.showSnackBar('Edit location successfully.')
+              }
+
+            })
+      }
+    },
     deleteLocation() {
       let location_id = this.location.location_id
       // console.log(location_id)
@@ -683,6 +756,27 @@ export default {
     showSnackBar(message) {
       this.snackbar = true
       this.message = message
+    },
+    updateLocationData() {
+      retrieveLocation(this.location.location_id)
+          .then(res => {
+            console.log(res.data)
+            let index = findIndexByColumnValue(this.location_data, 'id', this.location.location_id)
+            let payload = {
+              index: index,
+              address: res.data.address,
+              ownerName: res.data.owner_name
+            }
+            this.$store.dispatch('location/update_location', payload)
+            this.side_navigation_drawer_items.forEach(item => {
+              if (item.title === 'Address') {
+                item.value = res.data.address
+              }
+              if (item.title === 'Owner') {
+                item.value = res.data.owner_name
+              }
+            })
+          })
     },
     updateLocationRatingData() {
       //從DB取得此location_id的rating資料
@@ -896,9 +990,9 @@ export default {
   margin-bottom: 10px;
 }
 
-.delete-location-btn-container {
+.edit-delete-location-btn-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin-top: 10px;
 }
 
