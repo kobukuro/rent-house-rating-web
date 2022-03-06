@@ -45,35 +45,7 @@
     <!--      </el-row>-->
     <!--    </el-header>-->
     <nav>
-      <v-toolbar dense elevation="2">
-        <v-spacer></v-spacer>
-        <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs"
-                   v-on="on"
-                   icon>
-              <v-icon>account_circle</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item>
-              {{ username }}
-            </v-list-item>
-            <v-list-item>
-              {{ email }}
-            </v-list-item>
-            <v-list-item>
-              <v-btn @click="logout">
-                <span>Logout</span>
-                <v-icon>logout</v-icon>
-              </v-btn>
-            </v-list-item>
-          </v-list>
 
-
-        </v-menu>
-
-      </v-toolbar>
       <v-navigation-drawer app
                            absolute
                            bottom

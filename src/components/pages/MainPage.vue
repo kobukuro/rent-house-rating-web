@@ -41,6 +41,39 @@
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </v-toolbar>
+      <v-toolbar dense floating elevation="0"
+                 style="float: right; background: transparent; margin-top: 10px; margin-left: 50px; position:relative;z-index:1000;">
+        <v-spacer></v-spacer>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs"
+                   v-on="on"
+                   x-large
+
+                   icon
+                   >
+              <v-icon>account_circle</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              {{ username }}
+            </v-list-item>
+            <v-list-item>
+              {{ email }}
+            </v-list-item>
+            <v-list-item>
+              <v-btn @click="logout">
+                <span>Logout</span>
+                <v-icon>logout</v-icon>
+              </v-btn>
+            </v-list-item>
+          </v-list>
+
+
+        </v-menu>
+
+      </v-toolbar>
       <l-layer-group ref="newLayerGroup" class="leaflet-popup-content">
         <l-popup>
           <div>
@@ -150,7 +183,7 @@
 </template>
 
 <script>
-import {getUserName} from "@/utils/auth";
+import {getEmail, getUserName} from "@/utils/auth";
 import {location_api} from "@/api";
 import axios from "axios";
 // import ContextMenu from './ContextMenu';
@@ -302,7 +335,10 @@ export default {
     clickMarker(location) {
       this.$emit('markerClicked', location)
       this.ratingToAdd.location_id = location.id
-    }
+    },
+    logout() {
+      this.$store.dispatch('user/logout')
+    },
   },
   computed: {
     username() {
@@ -310,6 +346,9 @@ export default {
     },
     location_data() {
       return this.$store.getters['location/location_data']
+    },
+    email() {
+      return getEmail()
     },
   },
 
