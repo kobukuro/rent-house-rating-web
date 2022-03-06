@@ -24,7 +24,23 @@
         style="height: 100vh"
         @contextmenu="openContextMenu"
     >
-
+      <v-toolbar
+          dense
+          floating
+          style="margin-top: 10px; margin-left: 50px; position:relative;z-index:1000;"
+      >
+        <v-text-field
+            hide-details
+            prepend-icon="mdi-magnify"
+            single-line
+        ></v-text-field>
+        <v-btn icon>
+          <v-icon>mdi-crosshairs-gps</v-icon>
+        </v-btn>
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </v-toolbar>
       <l-layer-group ref="newLayerGroup" class="leaflet-popup-content">
         <l-popup>
           <div>
