@@ -25,56 +25,68 @@
         @contextmenu="openContextMenu"
         @click="clickMap"
     >
-      <v-toolbar
-          dense
-          floating
-          style="margin-top: 10px; margin-left: 10px; position:relative;z-index:1000;"
-      >
-        <v-text-field
-            hide-details
-            prepend-icon="mdi-magnify"
-            single-line
-        ></v-text-field>
-        <v-btn icon>
-          <v-icon>mdi-crosshairs-gps</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <v-toolbar dense floating elevation="0"
-                 style="float: right; background: transparent; margin-top: 10px; margin-left: 50px; position:relative;z-index:1000;">
-        <v-spacer></v-spacer>
-        <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs"
-                   v-on="on"
-                   x-large
+      <div class="toolbar-container">
+        <v-toolbar
+            dense
+            floating
+            style="margin-top: 10px; margin-left: 10px;
+            position:relative;z-index:1000;
+            max-width: 350px"
+        >
+          <v-text-field
+              hide-details
+              prepend-icon="mdi-magnify"
+              single-line
+          ></v-text-field>
+          <v-btn icon>
+            <v-icon>mdi-crosshairs-gps</v-icon>
+          </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-select
+            background-color="blue"
+            :items="items"
+            label="Standard"
+            style="position:relative;z-index:1000;
+            margin-left: 20px;
+            max-width: 100px"
+        ></v-select>
+          <v-toolbar dense elevation="0"
+                     style="background: transparent; margin-top: 10px; margin-left: auto; position:relative;z-index:1000;">
+            <v-spacer></v-spacer>
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn v-bind="attrs"
+                       v-on="on"
+                       x-large
 
-                   icon
-            >
-              <v-icon>account_circle</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item>
-              {{ username }}
-            </v-list-item>
-            <v-list-item>
-              {{ email }}
-            </v-list-item>
-            <v-list-item>
-              <v-btn @click="logout">
-                <span>Logout</span>
-                <v-icon>logout</v-icon>
-              </v-btn>
-            </v-list-item>
-          </v-list>
+                       icon
+                >
+                  <v-icon>account_circle</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item>
+                  {{ username }}
+                </v-list-item>
+                <v-list-item>
+                  {{ email }}
+                </v-list-item>
+                <v-list-item>
+                  <v-btn @click="logout">
+                    <span>Logout</span>
+                    <v-icon>logout</v-icon>
+                  </v-btn>
+                </v-list-item>
+              </v-list>
 
 
-        </v-menu>
+            </v-menu>
 
-      </v-toolbar>
+          </v-toolbar>
+      </div>
       <l-layer-group ref="newLayerGroup" class="leaflet-popup-content">
         <l-popup>
           <div>
@@ -198,6 +210,7 @@ export default {
 
   data() {
     return {
+      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
       snackbar: false,
       message: '',
       inputRules: [
@@ -357,7 +370,7 @@ export default {
       }
       return this.icon.type.black
     },
-    clickMap(){
+    clickMap() {
       this.$store.dispatch('location/clear_current_click_location')
     }
   },
@@ -371,7 +384,7 @@ export default {
     email() {
       return getEmail()
     },
-    current_click_location(){
+    current_click_location() {
       return this.$store.getters['location/current_click_location']
     }
   },
@@ -423,5 +436,10 @@ html, body {
   min-width: 180px;
   height: 100px;
   /*overflow-y: scroll;*/
+}
+
+.toolbar-container {
+  display: flex;
+  flex-direction: row;
 }
 </style>
