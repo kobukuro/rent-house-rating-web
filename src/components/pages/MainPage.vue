@@ -250,7 +250,9 @@ export default {
           black:
               "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png",
           gold:
-              "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png"
+              "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png",
+          red:
+              "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png"
         },
         shadowUrl:
             "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
@@ -348,7 +350,7 @@ export default {
     marker_icon_logic(item) {
       if (this.current_click_location !== null) {
         if (item.id === this.current_click_location.id) {
-          return this.icon.type.gold
+          return this.icon.type.red
         } else {
           return this.icon.type.black
         }
