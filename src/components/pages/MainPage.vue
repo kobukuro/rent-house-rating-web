@@ -23,6 +23,7 @@
         :options="options"
         style="height: 100vh"
         @contextmenu="openContextMenu"
+        @click="clickMap"
     >
       <v-toolbar
           dense
@@ -150,7 +151,7 @@
       <l-marker :lat-lng="item.local" v-for="item in location_data" :key="item.id" @click="clickMarker(item)">
         <!-- 標記點樣式判斷 -->
         <l-icon
-            :icon-url="item.address === '夢時代購物中心'?icon.type.gold:icon.type.black"
+            :icon-url="marker_icon_logic(item)"
             :shadow-url="icon.shadowUrl"
             :icon-size="icon.iconSize"
             :icon-anchor="icon.iconAnchor"
@@ -197,6 +198,7 @@ export default {
 
   data() {
     return {
+      current_click_location: null,
       snackbar: false,
       message: '',
       inputRules: [
@@ -337,10 +339,26 @@ export default {
     clickMarker(location) {
       this.$emit('markerClicked', location)
       this.ratingToAdd.location_id = location.id
+      this.current_click_location = location
+      // console.log(location)
+      // console.log(this.location_data)
     },
     logout() {
       this.$store.dispatch('user/logout')
     },
+    marker_icon_logic(item) {
+      if (this.current_click_location !== null) {
+        if (item.id === this.current_click_location.id) {
+          return this.icon.type.gold
+        } else {
+          return this.icon.type.black
+        }
+      }
+      return this.icon.type.black
+    },
+    clickMap(){
+      this.current_click_location = null
+    }
   },
   computed: {
     username() {
