@@ -4,7 +4,8 @@ const state = {
         // {id: -1, address: "漢神百貨", local: [22.61942, 120.296386], owner_name: '', ratings: []},
         // {id: -2, address: "漢神巨蛋", local: [22.669603, 120.302288], owner_name: '', ratings: []},
         // {id: -3, address: "大統百貨", local: [22.630748, 120.318033], owner_name: '', ratings: []}
-    ]
+    ],
+    current_click_location: null
 }
 const mutations = {
     CLEAR_LOCATIONS(state) {
@@ -13,7 +14,7 @@ const mutations = {
     ADD_LOACTION: (state, new_location_data) => {
         state.location_data.push(new_location_data)
     },
-    UPDATE_LOCATION:(state, payload) => {
+    UPDATE_LOCATION: (state, payload) => {
         state.location_data[payload.index].address = payload.address
         state.location_data[payload.index].ownerName = payload.ownerName
     },
@@ -38,7 +39,13 @@ const mutations = {
     },
     UPDATE_LOCATION_RATINGS: (state, payload) => {
         state.location_data[payload.index]['ratings'] = payload.ratings
-    }
+    },
+    SET_CURRENT_CLICK_LOCATION: (state, payload) => {
+        state.current_click_location = payload
+    },
+    CLEAR_CURRENT_CLICK_LOCATION: (state) => {
+        state.current_click_location = null
+    },
 }
 const actions = {
     clear_locations({commit}) {
@@ -61,11 +68,20 @@ const actions = {
     },
     update_location_ratings({commit}, payload) {
         commit('UPDATE_LOCATION_RATINGS', payload)
-    }
+    },
+    set_current_click_location({commit}, payload) {
+        commit('SET_CURRENT_CLICK_LOCATION', payload)
+    },
+    clear_current_click_location({commit}) {
+        commit('CLEAR_CURRENT_CLICK_LOCATION')
+    },
 }
 const getters = {
     location_data(state) {
         return state.location_data
+    },
+    current_click_location(state) {
+        return state.current_click_location
     }
 
 }

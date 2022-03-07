@@ -198,7 +198,6 @@ export default {
 
   data() {
     return {
-      current_click_location: null,
       snackbar: false,
       message: '',
       inputRules: [
@@ -339,7 +338,7 @@ export default {
     clickMarker(location) {
       this.$emit('markerClicked', location)
       this.ratingToAdd.location_id = location.id
-      this.current_click_location = location
+      this.$store.dispatch('location/set_current_click_location', location)
       // console.log(location)
       // console.log(this.location_data)
     },
@@ -357,7 +356,7 @@ export default {
       return this.icon.type.black
     },
     clickMap(){
-      this.current_click_location = null
+      this.$store.dispatch('location/clear_current_click_location')
     }
   },
   computed: {
@@ -370,6 +369,9 @@ export default {
     email() {
       return getEmail()
     },
+    current_click_location(){
+      return this.$store.getters['location/current_click_location']
+    }
   },
 
   mounted() {

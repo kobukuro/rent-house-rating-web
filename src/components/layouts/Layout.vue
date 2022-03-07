@@ -825,6 +825,13 @@ export default {
     },
 
   },
+  watch: {
+    is_side_navigation_drawer_show: function () {
+      if (this.is_side_navigation_drawer_show === false) {
+        this.$store.dispatch('location/clear_current_click_location')
+      }
+    }
+  },
   computed: {
     username() {
       return getUserName()
