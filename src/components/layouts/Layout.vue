@@ -815,7 +815,7 @@ export default {
               count += value_array[i]
               total += key_array[i] * value_array[i]
             }
-            this.location.rating_average = total / count
+            this.location.rating_average = Math.round(total / count * 100) / 100
           })
     },
     updateSeriesLine() {
