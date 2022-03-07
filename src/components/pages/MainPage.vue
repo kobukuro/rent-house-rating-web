@@ -45,47 +45,51 @@
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </v-toolbar>
+        <!--  https://stackoverflow.com/questions/61775457/vuetify-v-select-with-image      -->
         <v-select
-            background-color="blue"
+            class="no-underline rounded-xl"
+            prepend-inner-icon="mdi-star"
+            background-color="white"
             :items="items"
-            label="Standard"
+            label="rating"
             style="position:relative;z-index:1000;
             margin-left: 20px;
-            max-width: 100px"
+            max-width: 100px;"
+
         ></v-select>
-          <v-toolbar dense elevation="0"
-                     style="background: transparent; margin-top: 10px; margin-left: auto; position:relative;z-index:1000;">
-            <v-spacer></v-spacer>
-            <v-menu offset-y>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn v-bind="attrs"
-                       v-on="on"
-                       x-large
+        <v-toolbar dense elevation="0"
+                   style="background: transparent; margin-top: 10px; margin-left: auto; position:relative;z-index:1000;">
+          <v-spacer></v-spacer>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-bind="attrs"
+                     v-on="on"
+                     x-large
 
-                       icon
-                >
-                  <v-icon>account_circle</v-icon>
+                     icon
+              >
+                <v-icon>account_circle</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item>
+                {{ username }}
+              </v-list-item>
+              <v-list-item>
+                {{ email }}
+              </v-list-item>
+              <v-list-item>
+                <v-btn @click="logout">
+                  <span>Logout</span>
+                  <v-icon>logout</v-icon>
                 </v-btn>
-              </template>
-              <v-list>
-                <v-list-item>
-                  {{ username }}
-                </v-list-item>
-                <v-list-item>
-                  {{ email }}
-                </v-list-item>
-                <v-list-item>
-                  <v-btn @click="logout">
-                    <span>Logout</span>
-                    <v-icon>logout</v-icon>
-                  </v-btn>
-                </v-list-item>
-              </v-list>
+              </v-list-item>
+            </v-list>
 
 
-            </v-menu>
+          </v-menu>
 
-          </v-toolbar>
+        </v-toolbar>
       </div>
       <l-layer-group ref="newLayerGroup" class="leaflet-popup-content">
         <l-popup>
@@ -441,5 +445,13 @@ html, body {
 .toolbar-container {
   display: flex;
   flex-direction: row;
+}
+
+.no-underline.v-text-field > .v-input__control > .v-input__slot:before {
+  border-style: none;
+}
+
+.no-underline.v-text-field > .v-input__control > .v-input__slot:after {
+  border-style: none;
 }
 </style>
